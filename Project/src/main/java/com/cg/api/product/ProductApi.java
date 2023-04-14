@@ -1,4 +1,4 @@
-package com.cg.api;
+package com.cg.api.product;
 
 import com.cg.serivce.product.ProductListRequest;
 import com.cg.serivce.product.ProductListResponse;
