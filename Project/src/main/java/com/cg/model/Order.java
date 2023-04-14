@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Entity
@@ -14,14 +15,21 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "categorys")
-public class Category extends BaseEntity {
+@Table(name = "orders")
+public class Order extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    private BigDecimal totalAmount;
 
-    @OneToMany(mappedBy = "category",fetch = FetchType.LAZY)
-    private List<Product> products;
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    private Customer customerOrder;
+
+    @OneToMany(mappedBy = "order")
+    private List<OrderItem> orderItems;
+
+
+
 }

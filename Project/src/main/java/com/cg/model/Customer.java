@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "customers")
-public class Customer {
+public class Customer extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -27,6 +27,12 @@ public class Customer {
 
     @OneToMany(mappedBy = "customer")
     private List<CustomerAddress> customerAddressList;
+
+    @OneToOne(mappedBy = "customerCart")
+    private Cart cart;
+
+    @OneToMany(mappedBy = "customerOrder" )
+    private List<Order> orders;
 
 
 

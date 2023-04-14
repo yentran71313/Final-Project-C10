@@ -16,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "products")
-public class Product {
+public class Product extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,5 +46,9 @@ public class Product {
     private Brand brand;
 
     @OneToMany(mappedBy = "product")
-    private List<CartItem> cartItemList;
+    private List<CartItem> cartItems;
+
+    @OneToMany(mappedBy = "productOrder")
+    private List<OrderItem> orderItems;
+
 }
