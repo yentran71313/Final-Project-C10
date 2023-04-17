@@ -1,8 +1,8 @@
 package com.cg.api.product;
 
-import com.cg.serivce.product.ProductListRequest;
-import com.cg.serivce.product.ProductListResponse;
-import com.cg.serivce.product.ProductService;
+import com.cg.service.product.ProductListRequest;
+import com.cg.service.product.ProductListResponse;
+import com.cg.service.product.ProductService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
