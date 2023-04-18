@@ -3,8 +3,7 @@ package com.cg.service.product;
 import com.cg.model.Product;
 import com.cg.repository.ProductRepository;
 
-
-import com.cg.service.baseservice.IBaseService;
+import com.cg.service.baseService.IBaseService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
