@@ -51,7 +51,7 @@ public class AuthAPI {
             return appUtils.mapErrorToResponse(bindingResult);
         }
 
-        Boolean existUsername = userService.existByUserName(staffReqDTO.getUserName());
+        Boolean existUsername = userService.existByUserName(staffReqDTO.getUsername());
         if (existUsername) {
             throw new EmailExistsException("User name is exists");
         }
