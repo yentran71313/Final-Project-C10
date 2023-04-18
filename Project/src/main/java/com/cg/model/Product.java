@@ -16,6 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "products")
+
 public class Product extends BaseEntity {
 
     @Id
@@ -34,6 +35,8 @@ public class Product extends BaseEntity {
 
     private String warranty;
 
+    private String image;
+
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     private List<Image> images;
 
@@ -50,5 +53,7 @@ public class Product extends BaseEntity {
 
     @OneToMany(mappedBy = "productOrder")
     private List<OrderItem> orderItems;
+
+
 
 }

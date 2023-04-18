@@ -1,6 +1,7 @@
 package com.cg.model;
 
 
+import com.cg.service.category.CategoryListResponse;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,4 +25,10 @@ public class Category extends BaseEntity {
 
     @OneToMany(mappedBy = "category",fetch = FetchType.LAZY)
     private List<Product> products;
+
+    public CategoryListResponse toCategoryListResponse (){
+        return new CategoryListResponse()
+                .setId(id)
+                .setName(name);
+    }
 }
