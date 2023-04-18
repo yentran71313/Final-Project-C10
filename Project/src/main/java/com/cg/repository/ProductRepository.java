@@ -13,6 +13,7 @@ import java.util.Optional;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product,Long> {
+
     @Query("select new com.cg.service.product.ProductListResponse(p.id, p.name, p.price,p.marketPrice,p.category.name,p.brand.name,p.warranty)  from Product  p " +
             "where (:#{#request.search} is null or p.name  like :#{#request.search} or :#{#request.search}  like p.description)  " +
             "and (:#{#request.brandId} is null or :#{#request.brandId} = p.brand.id) " +

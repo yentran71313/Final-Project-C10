@@ -12,6 +12,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import javax.validation.ConstraintViolationException;
 import java.util.ArrayList;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +21,17 @@ import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
+
+
+    @ExceptionHandler(UnauthorizedException.class)
+    public ResponseEntity<?> unAuthorizedException(UnauthorizedException ex, WebRequest request) {
+        Map<String, String> body = new HashMap<>();
+
+        body.put("message", ex.getMessage());
+
+        return new ResponseEntity<>(body, HttpStatus.UNAUTHORIZED);
+    }
+
 
   @Override
   protected ResponseEntity<Object> handleMethodArgumentNotValid(
