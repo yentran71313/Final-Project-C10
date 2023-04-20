@@ -2,8 +2,15 @@ package com.cg.api.product;
 
 
 import com.cg.exception.DataInputException;
+import com.cg.exception.ResourceNotFoundException;
+import com.cg.model.Brand;
 import com.cg.model.Category;
+import com.cg.model.Image;
 import com.cg.model.Product;
+import com.cg.repository.BrandRepository;
+import com.cg.repository.ImageRepository;
+import com.cg.repository.ProductRepository;
+import com.cg.service.brand.BrandService;
 import com.cg.service.category.CategoryService;
 import com.cg.service.product.ProductCreateRequest;
 
@@ -19,6 +26,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -29,33 +40,75 @@ public class ProductApi {
 
     private final CategoryService categoryService;
 
+    private final BrandService brandService;
+
+    private final ProductRepository productRepository;
+
+    private final ImageRepository imageRepository;
+
+    private final BrandRepository brandRepository;
+
     @GetMapping
     public ResponseEntity<Page<ProductListResponse>> findAll(ProductListRequest request, Pageable pageable){
         return new ResponseEntity<>(productService.getAllAndSearch(request, pageable), HttpStatus.OK);
     }
 
+//    @GetMapping
+//    public ResponseEntity<?> findAll(ProductListRequest request, Pageable pageable){
+//        return new ResponseEntity<>(productRepository.getAllProduct( pageable), HttpStatus.OK);
+//    }
+
     @GetMapping("/{idProduct}")
-    public ResponseEntity<ProductListResponse> findById(@PathVariable Long idProduct){
-        Optional<Product> productListResponse = productService.findById(idProduct);
-        if (productListResponse.isPresent()){
-            return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<?> findById(@PathVariable Long idProduct){
+//        Optional<Product> productListResponse = productService.findById(idProduct);
+//        if (productListResponse.isPresent()){
+//            return new ResponseEntity<>(HttpStatus.OK);
+//        }
+        Optional<Product> product = productRepository.findById(idProduct);
+        if (!product.isPresent()){
+            throw  new ResourceNotFoundException("Product not valid");
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        ProductListResponse productListResponse = productRepository.findProductResById(idProduct);
+
+        List<Image> images = imageRepository.findByProduct(product.get());
+        Map<Long,String> map = new HashMap<>();
+        for (Image image: images
+        ) {
+            map.put(image.getId(),image.getFileUrl());
+        }
+        productListResponse.setImages(map);
+        return new ResponseEntity<>(productListResponse,HttpStatus.NOT_FOUND);
     }
 
     @PostMapping
-    public ResponseEntity<ProductListResponse> create(ProductCreateRequest productCreateRequest, BindingResult bindingResult){
+    public ResponseEntity<ProductListResponse> create(ProductCreateRequest productCreateRequest,MultipartFile[] multipartFiles, BindingResult bindingResult) throws IOException {
         Optional<Category> categoryOptional = categoryService.findById(productCreateRequest.getCategoryId());
         if(!categoryOptional.isPresent()){
             throw new DataInputException("Category is not exist !");
         }
-
-        MultipartFile multipartFile = productCreateRequest.getMultipartFile();
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        Optional<Brand> brandOptional = brandService.findById(productCreateRequest.getBrandId());
+        if (!brandOptional.isPresent()){
+            throw new DataInputException("Brand is not exist !");
+        }
+        ProductListResponse productListResponse = productService.create(productCreateRequest,multipartFiles);
+        return new ResponseEntity<>(productListResponse,HttpStatus.CREATED);
     }
 
-    @PatchMapping
-    public ResponseEntity<ProductListResponse> update(){
-        return null;
+    @PatchMapping("{idProduct}")
+    public ResponseEntity<ProductListResponse> update(@PathVariable Long idProduct,ProductCreateRequest productCreateRequest, MultipartFile[] multipartFiles,BindingResult bindingResult) throws IOException {
+        Optional<Category> categoryOptional = categoryService.findById(productCreateRequest.getCategoryId());
+        if(!categoryOptional.isPresent()){
+            throw new DataInputException("Category is not exist !");
+        }
+        Optional<Brand> brandOptional = brandService.findById(productCreateRequest.getBrandId());
+        if (!brandOptional.isPresent()){
+            throw new DataInputException("Brand is not exist !");
+        }
+        Optional<Product> productOptional = productRepository.findById(idProduct);
+        if (!productOptional.isPresent()){
+            throw  new ResourceNotFoundException("Product not valid");
+        }
+        ProductListResponse productListResponse = productService.update(productCreateRequest,multipartFiles,productOptional.get());
+        return new ResponseEntity<>(productListResponse,HttpStatus.OK);
     }
 }

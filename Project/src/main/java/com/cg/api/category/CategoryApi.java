@@ -47,7 +47,7 @@ public class CategoryApi {
         }
 
         Category category = categoryListCreateRequest.toCategory();
-        return new ResponseEntity<>(categoryService.create(category),HttpStatus.CREATED);
+        return new ResponseEntity<>(category,HttpStatus.CREATED);
     }
 
     @PatchMapping ("/{idCategory}")
@@ -57,16 +57,20 @@ public class CategoryApi {
         if (bindingResult.hasErrors()){
             return appUtil.mapErrorToResponse(bindingResult) ;
         }
+
         if (categoryService.findByName(categoryListCreateRequest.getName()).isPresent()){
             return new ResponseEntity<>("Name have existed",HttpStatus.BAD_REQUEST);
         }
         Optional<Category> category = categoryService.findById(idCategory);
         if (category.isPresent()){
-            return new ResponseEntity<>(categoryService.create(category.get().setName(categoryListCreateRequest.getName())),HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>("Category is not exist !!!", HttpStatus.NOT_FOUND);
         }
     }
+
+
+
 
 
 }

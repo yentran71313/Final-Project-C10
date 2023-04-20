@@ -20,17 +20,16 @@ public class Image {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String fileName;
-
-    private String fileFolder;
-
     private String fileUrl;
-
-    private String fileType;
 
     private String cloudId;
 
+    @OneToOne
+    @JoinColumn(name = "brand_id")
+    private Brand brand;
+
     @ManyToOne
-    @JoinColumn(name = "product_id",nullable = false)
+    @JoinColumn(name = "product_id")
     private Product product;
+
 }
