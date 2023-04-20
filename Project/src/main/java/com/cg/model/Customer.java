@@ -26,14 +26,12 @@ public class Customer extends BaseEntity {
     private String email;
 
     @OneToMany(mappedBy = "customer")
-    private List<CustomerAddress> customerAddressList;
+    private List<LocationRegion> locationRegionList;
 
     @OneToOne(mappedBy = "customerCart")
     private Cart cart;
 
     @OneToMany(mappedBy = "customerOrder" )
     private List<Order> orders;
-
-
 
 }
