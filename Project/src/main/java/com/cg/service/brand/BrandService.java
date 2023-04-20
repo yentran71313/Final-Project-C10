@@ -1,7 +1,7 @@
 package com.cg.service.brand;
 
 import com.cg.model.Brand;
-import com.cg.service.baseservice.IBaseService;
+import com.cg.service.baseService.IBaseService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
