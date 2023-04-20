@@ -1,4 +1,7 @@
 package com.cg.service.product;
+import com.cg.model.Brand;
+import com.cg.model.Category;
+import com.cg.model.Product;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,8 +28,6 @@ public class ProductCreateRequest implements Validator {
 
     private BigDecimal price;
 
-    private MultipartFile multipartFile;
-
     @Override
     public boolean supports(Class<?> clazz) {
         return ProductCreateRequest.class.isAssignableFrom(clazz);
@@ -35,5 +36,23 @@ public class ProductCreateRequest implements Validator {
     @Override
     public void validate(Object target, Errors errors) {
         ProductCreateRequest productCreateRequest = (ProductCreateRequest) target;
+        String name = productCreateRequest.getName();
+        Long categoryId = productCreateRequest.getCategoryId();
+        Long brandId = productCreateRequest.getBrandId();
+        String warranty = productCreateRequest.getWarranty();
+        BigDecimal price = productCreateRequest.getPrice();
+
+        if (name.length()==0 || name == ""){
+            errors.rejectValue("name","name.length","Name is not valid");
+        }
+    }
+
+    public Product toProduct(Category category, Brand brand){
+        return new Product()
+                .setName(name)
+                .setPrice(price)
+                .setWarranty(warranty)
+                .setCategory(category)
+                .setBrand(brand);
     }
 }
