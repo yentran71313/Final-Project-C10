@@ -10,7 +10,7 @@ import com.cg.repository.ImageRepository;
 import com.cg.repository.ProductRepository;
 
 
-import com.cg.service.baseservice.IBaseService;
+
 import com.cg.service.upload.UploadService;
 import com.cg.util.UploadUtil;
 import lombok.AllArgsConstructor;
@@ -30,7 +30,7 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 @Transactional
-public class ProductService implements IBaseService<ProductListResponse, ProductListRequest,ProductCreateRequest, Product> {
+public class ProductService implements com.cg.service.baseService.IBaseService<ProductListResponse, ProductListRequest,ProductCreateRequest, Product> {
 
 
     private final ProductRepository productRepository;
