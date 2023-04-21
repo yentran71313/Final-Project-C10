@@ -20,6 +20,4 @@ public class UserLoginDTO {
     @NotBlank(message = "Please input password ! ")
     @Pattern(regexp = "(^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$)", message = "Password Invalid")
     private String password;
-
-
 }
