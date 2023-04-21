@@ -1,6 +1,7 @@
 package com.cg.model;
 
 
+import com.cg.service.product.ProductListResponse;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,6 +10,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 @Entity
 @Getter
@@ -35,8 +37,6 @@ public class Product extends BaseEntity {
 
     private String warranty;
 
-    private String image;
-
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     private List<Image> images;
 
@@ -53,6 +53,18 @@ public class Product extends BaseEntity {
 
     @OneToMany(mappedBy = "productOrder")
     private List<OrderItem> orderItems;
+
+    public ProductListResponse toProductListResponse(Map images){
+        return new ProductListResponse()
+                .setName(name)
+                .setPrice(price)
+                .setWarranty(warranty)
+                .setMarketPrice(marketPrice)
+                .setNameBrand(brand.getName())
+                .setNameCategory(category.getName())
+                .setImages(images).setId(id);
+
+    }
 
 
 

@@ -1,5 +1,8 @@
-package com.cg.model;
+package com.cg.model.customer;
 
+import com.cg.model.BaseEntity;
+import com.cg.model.Cart;
+import com.cg.model.Order;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,14 +29,12 @@ public class Customer extends BaseEntity {
     private String email;
 
     @OneToMany(mappedBy = "customer")
-    private List<CustomerAddress> customerAddressList;
+    private List<LocationRegion> locationRegions;
 
     @OneToOne(mappedBy = "customerCart")
     private Cart cart;
 
     @OneToMany(mappedBy = "customerOrder" )
     private List<Order> orders;
-
-
 
 }
