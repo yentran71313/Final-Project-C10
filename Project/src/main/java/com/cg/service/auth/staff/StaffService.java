@@ -55,7 +55,6 @@ public class StaffService implements IStaffService {
 
         Staff staff = staffReqDTO.toStaff();
         User user = new User();
-        user.setId(null);
         user.setUsername(staffReqDTO.getUsername());
         user.setPassword(passwordEncoder.encode(staffReqDTO.getPassword()));
         Optional<Role> roleOptional = roleRepository.findByCode("USER");
