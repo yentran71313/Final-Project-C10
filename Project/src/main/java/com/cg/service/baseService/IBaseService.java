@@ -1,4 +1,4 @@
-package com.cg.service.baseService;
+package com.cg.service.baseservice;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,15 +12,10 @@ public interface IBaseService<T, S, R, Z> {
 
     Optional<Z> findById(Long id);
 
-    T create(R r, MultipartFile multipartFile) throws IOException;
+    void create(R r);
+    void update(R r);
 
-    T create(R r, MultipartFile[] multipartFile) throws IOException;
-
-    Optional<Z> findByName(String name);
-
-    T update(R r, MultipartFile multipartFile, Z z) throws IOException;
-
-    T update(R r, MultipartFile multipartFile[], Z z) throws IOException;
+    void delete(Long id);
 }
 
 

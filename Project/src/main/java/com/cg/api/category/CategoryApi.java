@@ -33,40 +33,24 @@ public class CategoryApi {
 
     @GetMapping("/{idCategory}")
     private ResponseEntity<?> findById(@PathVariable Long idCategory){
-        return new ResponseEntity<>(categoryService.findById(idCategory).get().toCategoryListResponse(),HttpStatus.OK);
+        return new ResponseEntity<>(categoryService.findById(idCategory).get(),HttpStatus.OK);
     }
 
     @PostMapping
     private ResponseEntity<?> create(@RequestBody CategoryListCreateRequest categoryListCreateRequest, BindingResult bindingResult){
         new CategoryListCreateRequest().validate(categoryListCreateRequest,bindingResult);
-        if (bindingResult.hasErrors()){
-            return appUtil.mapErrorToResponse(bindingResult) ;
-        }
-        if (categoryService.findByName(categoryListCreateRequest.getName()).isPresent()){
-            return new ResponseEntity<>("Name have existed",HttpStatus.BAD_REQUEST);
-        }
-
-        Category category = categoryListCreateRequest.toCategory();
-        return new ResponseEntity<>(category,HttpStatus.CREATED);
+        categoryService.create(categoryListCreateRequest);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PatchMapping ("/{idCategory}")
     private ResponseEntity<?> update(@PathVariable Long idCategory,@RequestBody CategoryListCreateRequest categoryListCreateRequest, BindingResult bindingResult){
 
-        new CategoryListCreateRequest().validate(categoryListCreateRequest,bindingResult);
-        if (bindingResult.hasErrors()){
-            return appUtil.mapErrorToResponse(bindingResult) ;
-        }
 
-        if (categoryService.findByName(categoryListCreateRequest.getName()).isPresent()){
-            return new ResponseEntity<>("Name have existed",HttpStatus.BAD_REQUEST);
-        }
-        Optional<Category> category = categoryService.findById(idCategory);
-        if (category.isPresent()){
-            return new ResponseEntity<>(HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("Category is not exist !!!", HttpStatus.NOT_FOUND);
-        }
+        categoryListCreateRequest.setId(idCategory);
+
+        categoryService.update(categoryListCreateRequest);
+        return new  ResponseEntity<>(HttpStatus.OK);
     }
 
 
