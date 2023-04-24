@@ -1,7 +1,7 @@
 package com.cg.api.category;
 
 
-import com.cg.model.Category;
+import com.cg.model.product.Category;
 import com.cg.service.category.CategoryListCreateRequest;
 import com.cg.service.category.CategoryListRequest;
 import com.cg.service.category.CategoryListResponse;

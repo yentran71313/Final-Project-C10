@@ -1,15 +1,14 @@
 package com.cg.service.brand;
 
-import com.cg.model.Brand;
+import com.cg.model.product.Brand;
 import com.cg.model.Image;
 import com.cg.repository.BrandRepository;
 import com.cg.repository.ImageRepository;
 
+import com.cg.service.baseservice.IBaseService;
 import com.cg.service.upload.UploadService;
 import com.cg.util.UploadUtil;
 import lombok.AllArgsConstructor;
-
-import com.cg.service.baseService.IBaseService;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

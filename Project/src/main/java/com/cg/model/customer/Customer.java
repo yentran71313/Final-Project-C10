@@ -2,7 +2,9 @@ package com.cg.model.customer;
 
 import com.cg.model.BaseEntity;
 import com.cg.model.Cart;
+import com.cg.model.Image;
 import com.cg.model.Order;
+import com.cg.model.dto.customerDTO.CustomerResDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,17 +26,33 @@ public class Customer extends BaseEntity {
 
     private String fullName;
 
-    private String phone;
+    private String phoneNumber;
 
     private String email;
 
-    @OneToMany(mappedBy = "customer")
-    private List<LocationRegion> locationRegions;
+   @ManyToOne
+   @JoinColumn(name = "location_region_id", referencedColumnName = "id", nullable = false)
+   private LocationRegion locationRegion;
 
-    @OneToOne(mappedBy = "customerCart")
-    private Cart cart;
+//    @OneToOne(mappedBy = "customerCart")
+//    private Cart cart;
+//
+//    @ManyToOne
+//    @JoinColumn(name = "order_id", referencedColumnName = "id",nullable = false)
+//    private Order order;
 
-    @OneToMany(mappedBy = "customerOrder" )
-    private List<Order> orders;
+    @OneToOne(mappedBy = "customer")
+    private Image image;
+
+
+    public CustomerResDTO toCustomerResDTO(){
+        return new CustomerResDTO()
+                .setId(id)
+                .setFullName(fullName)
+                .setPhoneNumber(phoneNumber)
+                .setEmail(email)
+                .setLocationRegion(locationRegion.toLocationRegionDTO())
+                .setImages(image);
+    }
 
 }

@@ -3,19 +3,19 @@ package com.cg.api.product;
 
 import com.cg.exception.DataInputException;
 import com.cg.exception.ResourceNotFoundException;
-import com.cg.model.Brand;
-import com.cg.model.Category;
+import com.cg.model.product.Brand;
+import com.cg.model.product.Category;
 import com.cg.model.Image;
-import com.cg.model.Product;
+import com.cg.model.product.Product;
 import com.cg.repository.BrandRepository;
 import com.cg.repository.ImageRepository;
 import com.cg.repository.ProductRepository;
 import com.cg.service.brand.BrandService;
 import com.cg.service.category.CategoryService;
-import com.cg.service.product.ProductCreateRequest;
+import com.cg.model.product.ProductCreateRequest;
 
-import com.cg.service.product.ProductListRequest;
-import com.cg.service.product.ProductListResponse;
+import com.cg.model.product.ProductListRequest;
+import com.cg.model.product.ProductListResponse;
 import com.cg.service.product.ProductService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -53,17 +53,11 @@ public class ProductApi {
         return new ResponseEntity<>(productService.getAllAndSearch(request, pageable), HttpStatus.OK);
     }
 
-//    @GetMapping
-//    public ResponseEntity<?> findAll(ProductListRequest request, Pageable pageable){
-//        return new ResponseEntity<>(productRepository.getAllProduct( pageable), HttpStatus.OK);
-//    }
+
 
     @GetMapping("/{idProduct}")
     public ResponseEntity<?> findById(@PathVariable Long idProduct){
-//        Optional<Product> productListResponse = productService.findById(idProduct);
-//        if (productListResponse.isPresent()){
-//            return new ResponseEntity<>(HttpStatus.OK);
-//        }
+
         Optional<Product> product = productRepository.findById(idProduct);
         if (!product.isPresent()){
             throw  new ResourceNotFoundException("Product not valid");
@@ -77,7 +71,7 @@ public class ProductApi {
             map.put(image.getId(),image.getFileUrl());
         }
         productListResponse.setImages(map);
-        return new ResponseEntity<>(productListResponse,HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(productListResponse,HttpStatus.OK);
     }
 
     @PostMapping

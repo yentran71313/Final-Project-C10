@@ -1,46 +1,29 @@
-package com.cg.model.customer;
+package com.cg.model.dto.customerDTO;
 
-import com.cg.model.customer.Customer;
-import com.cg.model.dto.customerDTO.LocationRegionDTO;
+import com.cg.model.customer.LocationRegion;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
-import java.util.List;
-
-@Entity
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "location_region")
-public class LocationRegion {
+@Getter
+@Setter
+public class LocationRegionDTO  {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String provinceId;
-
     private String provinceName;
-
     private String districtId;
-
     private String districtName;
-
     private String wardId;
-
     private String wardName;
 
     private String address;
 
-    @OneToMany
-    private List<Customer> customer;
-
-    public LocationRegionDTO toLocationRegionDTO(){
-        return new LocationRegionDTO()
+    public LocationRegion toLocationRegion(){
+        return new LocationRegion()
                 .setId(id)
                 .setProvinceId(provinceId)
                 .setProvinceName(provinceName)

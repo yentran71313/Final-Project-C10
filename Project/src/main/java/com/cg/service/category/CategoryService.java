@@ -1,8 +1,8 @@
 package com.cg.service.category;
 
-import com.cg.model.Category;
+import com.cg.model.product.Category;
 import com.cg.repository.CategoryRepository;
-import com.cg.service.baseService.IBaseService;
+import com.cg.service.baseservice.IBaseService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

@@ -1,6 +1,6 @@
 package com.cg.api.brand;
 
-import com.cg.model.Brand;
+import com.cg.model.product.Brand;
 import com.cg.service.brand.BrandListCreateRequest;
 import com.cg.service.brand.BrandListRequest;
 import com.cg.service.brand.BrandListResponse;

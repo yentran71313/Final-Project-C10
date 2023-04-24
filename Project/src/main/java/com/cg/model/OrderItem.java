@@ -1,6 +1,7 @@
 package com.cg.model;
 
 
+import com.cg.model.product.Product;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

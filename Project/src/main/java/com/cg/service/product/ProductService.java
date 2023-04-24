@@ -1,16 +1,19 @@
 package com.cg.service.product;
 
-import com.cg.model.Brand;
-import com.cg.model.Category;
+import com.cg.model.product.Brand;
+import com.cg.model.product.Category;
 import com.cg.model.Image;
-import com.cg.model.Product;
+import com.cg.model.product.Product;
+import com.cg.model.product.ProductCreateRequest;
+import com.cg.model.product.ProductListRequest;
+import com.cg.model.product.ProductListResponse;
 import com.cg.repository.BrandRepository;
 import com.cg.repository.CategoryRepository;
 import com.cg.repository.ImageRepository;
 import com.cg.repository.ProductRepository;
 
 
-
+import com.cg.service.baseservice.IBaseService;
 import com.cg.service.upload.UploadService;
 import com.cg.util.UploadUtil;
 import lombok.AllArgsConstructor;
@@ -21,16 +24,13 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 
 @Service
 @AllArgsConstructor
 @Transactional
-public class ProductService implements com.cg.service.baseService.IBaseService<ProductListResponse, ProductListRequest,ProductCreateRequest, Product> {
+public class ProductService implements IBaseService<ProductListResponse, ProductListRequest, ProductCreateRequest, Product> {
 
 
     private final ProductRepository productRepository;
@@ -67,7 +67,7 @@ public class ProductService implements com.cg.service.baseService.IBaseService<P
     public ProductListResponse create(ProductCreateRequest productCreateRequest, MultipartFile[] multipartFiles) throws IOException {
         ProductListResponse productListResponse = new ProductListResponse();
         if ( multipartFiles==null){
-            Category category = categoryRepository.findById(productCreateRequest.getCategoryId()).get();
+            Category category = new Category().setId(productCreateRequest.getCategoryId());
             Brand brand = brandRepository.findById(productCreateRequest.getBrandId()).get();
             Product product = productCreateRequest.toProduct(category,brand);
             product = productRepository.save(product);
@@ -91,7 +91,7 @@ public class ProductService implements com.cg.service.baseService.IBaseService<P
                 image.setProduct(product);
                 image = imageRepository.save(image);
 
-                images.put(image.getId(),image.getFileUrl());
+                images.put(image.getId(),image.getFileUrl()); // List = add
 
             }
             productListResponse = product.toProductListResponse(images);
