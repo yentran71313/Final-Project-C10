@@ -1,19 +1,7 @@
 package com.cg.api.product;
 
 
-import com.cg.exception.DataInputException;
-import com.cg.exception.ResourceNotFoundException;
-import com.cg.model.Brand;
-import com.cg.model.Category;
-import com.cg.model.Image;
-import com.cg.model.Product;
-import com.cg.repository.BrandRepository;
-import com.cg.repository.ImageRepository;
-import com.cg.repository.ProductRepository;
-import com.cg.service.brand.BrandService;
-import com.cg.service.category.CategoryService;
 import com.cg.service.product.ProductCreateRequest;
-
 import com.cg.service.product.ProductListRequest;
 import com.cg.service.product.ProductListResponse;
 import com.cg.service.product.ProductService;
@@ -27,10 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "api/products")
@@ -38,15 +22,6 @@ import java.util.Optional;
 public class ProductApi {
     private final ProductService productService;
 
-    private final CategoryService categoryService;
-
-    private final BrandService brandService;
-
-    private final ProductRepository productRepository;
-
-    private final ImageRepository imageRepository;
-
-    private final BrandRepository brandRepository;
 
     @GetMapping
     public ResponseEntity<Page<ProductListResponse>> findAll(ProductListRequest request, Pageable pageable){
@@ -60,55 +35,20 @@ public class ProductApi {
 
     @GetMapping("/{idProduct}")
     public ResponseEntity<?> findById(@PathVariable Long idProduct){
-//        Optional<Product> productListResponse = productService.findById(idProduct);
-//        if (productListResponse.isPresent()){
-//            return new ResponseEntity<>(HttpStatus.OK);
-//        }
-        Optional<Product> product = productRepository.findById(idProduct);
-        if (!product.isPresent()){
-            throw  new ResourceNotFoundException("Product not valid");
-        }
-        ProductListResponse productListResponse = productRepository.findProductResById(idProduct);
-
-        List<Image> images = imageRepository.findByProduct(product.get());
-        Map<Long,String> map = new HashMap<>();
-        for (Image image: images
-        ) {
-            map.put(image.getId(),image.getFileUrl());
-        }
-        productListResponse.setImages(map);
-        return new ResponseEntity<>(productListResponse,HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(productService.findById(idProduct),HttpStatus.NOT_FOUND);
     }
 
     @PostMapping
-    public ResponseEntity<ProductListResponse> create(ProductCreateRequest productCreateRequest,MultipartFile[] multipartFiles, BindingResult bindingResult) throws IOException {
-        Optional<Category> categoryOptional = categoryService.findById(productCreateRequest.getCategoryId());
-        if(!categoryOptional.isPresent()){
-            throw new DataInputException("Category is not exist !");
-        }
-        Optional<Brand> brandOptional = brandService.findById(productCreateRequest.getBrandId());
-        if (!brandOptional.isPresent()){
-            throw new DataInputException("Brand is not exist !");
-        }
-        ProductListResponse productListResponse = productService.create(productCreateRequest,multipartFiles);
-        return new ResponseEntity<>(productListResponse,HttpStatus.CREATED);
+    public ResponseEntity<ProductListResponse> create(@RequestBody ProductCreateRequest productCreateRequest,MultipartFile[] multipartFiles, BindingResult bindingResult) throws IOException {
+
+         productService.create(productCreateRequest);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PatchMapping("{idProduct}")
     public ResponseEntity<ProductListResponse> update(@PathVariable Long idProduct,ProductCreateRequest productCreateRequest, MultipartFile[] multipartFiles,BindingResult bindingResult) throws IOException {
-        Optional<Category> categoryOptional = categoryService.findById(productCreateRequest.getCategoryId());
-        if(!categoryOptional.isPresent()){
-            throw new DataInputException("Category is not exist !");
-        }
-        Optional<Brand> brandOptional = brandService.findById(productCreateRequest.getBrandId());
-        if (!brandOptional.isPresent()){
-            throw new DataInputException("Brand is not exist !");
-        }
-        Optional<Product> productOptional = productRepository.findById(idProduct);
-        if (!productOptional.isPresent()){
-            throw  new ResourceNotFoundException("Product not valid");
-        }
-        ProductListResponse productListResponse = productService.update(productCreateRequest,multipartFiles,productOptional.get());
-        return new ResponseEntity<>(productListResponse,HttpStatus.OK);
+        productCreateRequest.setId(idProduct);
+        productService.update(productCreateRequest);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
