@@ -1,5 +1,6 @@
-package com.cg.model;
+package com.cg.model.customer;
 
+import com.cg.model.customer.Customer;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +13,7 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "customer_address")
+@Table(name = "location_region")
 public class LocationRegion {
 
     @Id
