@@ -41,7 +41,8 @@ public class Customer extends BaseEntity {
 //    @JoinColumn(name = "order_id", referencedColumnName = "id",nullable = false)
 //    private Order order;
 
-    @OneToOne(mappedBy = "customer")
+    @OneToOne
+    @JoinColumn(name = "image_id")
     private Image image;
 
 

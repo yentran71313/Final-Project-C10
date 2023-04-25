@@ -23,22 +23,16 @@ public class BrandApi {
     private final BrandService brandService;
 
     @PostMapping
-    public ResponseEntity<?> create(BrandListCreateRequest brandListCreateRequest, MultipartFile multipartFile) throws IOException {
-        BrandListResponse brandListResponse = brandService.create(brandListCreateRequest,multipartFile);
-        return new ResponseEntity<>(brandListResponse, HttpStatus.CREATED);
+    public ResponseEntity<?> create(@RequestBody BrandListCreateRequest brandListCreateRequest) throws IOException {
+        brandService.create(brandListCreateRequest);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<?> update(BrandListCreateRequest brandListCreateRequest, MultipartFile multipartFile, @PathVariable Long id) throws IOException {
-        Optional<Brand> brandOptional = brandService.findById(id);
-        if (brandOptional.isPresent()){
-            Brand brand = brandOptional.get();
-
-            BrandListResponse brandListResponse = brandService.update(brandListCreateRequest,multipartFile,brand );
-            return new ResponseEntity<>(brandListResponse,HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("Brand is not exist !!!", HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<?> update(@RequestBody BrandListCreateRequest brandListCreateRequest,  @PathVariable Long id)  {
+        brandListCreateRequest.setId(id);
+        brandService.update(brandListCreateRequest);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping

@@ -27,16 +27,10 @@ public class Image {
 
     private String cloudId;
 
-    @OneToOne
-    @JoinColumn(name = "brand_id")
-    private Brand brand;
 
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
 
-    @OneToOne
-    @JoinColumn(name = "customer_id")
-    private Customer customer;
 
 }

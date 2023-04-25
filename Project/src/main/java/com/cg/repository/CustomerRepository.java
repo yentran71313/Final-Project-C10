@@ -14,9 +14,10 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
 
     @Query("SELECT NEW com.cg.model.dto.customerDTO.CustomerResDTO (cus.id,cus.fullName, cus.email,cus.phoneNumber) " +
             "from Customer as cus " +
-            "LEFT JOIN Image as img on cus.id = img.customer.id " +
+            "LEFT JOIN Image as img on cus.image.id = img.id " +
             "WHERE (:#{#request.search} is null or cus.fullName  like :#{#request.search} or :#{#request.search}  like cus.email) or :#{#request.search} like cus.phoneNumber " +
             "AND  (:#{#request.provinceId} is null or :#{#request.provinceId} = cus.locationRegion.provinceId) ")
     Page<CustomerResDTO> getAllAndSearch(CustomerRequestDTO request, Pageable pageable);
+
 
 }

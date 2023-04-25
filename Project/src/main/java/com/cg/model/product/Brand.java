@@ -28,7 +28,8 @@ public class Brand extends BaseEntity {
     @OneToMany(mappedBy = "brand",fetch = FetchType.LAZY)
     private List<Product> products;
 
-    @OneToOne(mappedBy = "brand")
+    @OneToOne
+    @JoinColumn(name = "image_id")
     private Image image;
 
     public BrandListResponse toBrandListResponse(){

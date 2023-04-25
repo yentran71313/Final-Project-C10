@@ -12,7 +12,5 @@ import java.util.List;
 public interface ImageRepository extends JpaRepository<Image,Long> {
 
 
-    List<Image> findByProduct(Product product);
 
-    List<Image> findByCustomer(Customer customer);
 }

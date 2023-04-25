@@ -17,6 +17,7 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -44,7 +45,7 @@ public class Product extends BaseEntity {
     private String warranty;
 
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
-    private List<Image> images;
+    private Set<Image> images;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")

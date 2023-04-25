@@ -40,17 +40,18 @@ public class CustomerCreateDTO {
     @NotBlank(message = "Address is required")
     private String address;
 
-    private MultipartFile image;
+    private Long image;
 
 
 
-    public Customer toCustomer(LocationRegion locationRegion){
+    public Customer toCustomer(){
         return new Customer()
                 .setId(id)
                 .setFullName(fullName)
                 .setPhoneNumber(phoneNumber)
                 .setEmail(email)
-                .setLocationRegion(locationRegion)
+                .setImage(new Image().setId(image))
+                .setLocationRegion(new LocationRegion(null,provinceId,provinceName,districtId,districtName,wardId,wardName,address))
                 ;
     }
 }

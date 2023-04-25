@@ -30,10 +30,6 @@ public class CustomerService implements IBaseService<CustomerResDTO, CustomerReq
     private CustomerRepository customerRepository;
     @Autowired
     private LocationRegionRepository locationRegionRepository;
-    @Autowired
-    private UploadService uploadService;
-    @Autowired
-    private ImageRepository imageRepository;
 
     @Override
     public Page<CustomerResDTO> getAllAndSearch(CustomerRequestDTO searchRequest, Pageable pageable) {
@@ -42,93 +38,32 @@ public class CustomerService implements IBaseService<CustomerResDTO, CustomerReq
 
     @Override
     public Optional<Customer> findById(Long id) {
-        return customerRepository.findById(id);
+        Optional<Customer> customer = customerRepository.findById(id);
+        return customer;
     }
 
     @Override
-    public CustomerResDTO create(CustomerCreateDTO customerCreateDTO, MultipartFile multipartFile) throws IOException {
-        CustomerResDTO customerResDTO = new CustomerResDTO();
-        LocationRegion locationRegion = new LocationRegion();
-        locationRegion.setProvinceId(customerCreateDTO.getProvinceId());
-        locationRegion.setProvinceName(customerCreateDTO.getProvinceName());
-        locationRegion.setDistrictId(customerCreateDTO.getDistrictId());
-        locationRegion.setDistrictName(customerCreateDTO.getDistrictName());
-        locationRegion.setWardId(customerCreateDTO.getWardId());
-        locationRegion.setWardName(customerCreateDTO.getWardName());
-        locationRegionRepository.save(locationRegion);
+    public void create(CustomerCreateDTO customerCreateDTO) {
 
-        if (multipartFile == null) {
-            Customer customer = customerCreateDTO.toCustomer(locationRegion);
-            customerRepository.save(customer);
-
-            customerResDTO = customer.toCustomerResDTO();
-        } else {
-
-            Customer customer = customerCreateDTO.toCustomer(locationRegion);
-            customerRepository.save(customer);
-
-            String str = uploadService.uploadFile(multipartFile);
-            String fileUlr = str.split("=")[0];
-            String cloudId = str.split("=")[1];
-
-            Image image = new Image();
-            image.setFileUrl(fileUlr);
-            image.setCloudId(cloudId);
-            imageRepository.save(image);
-            customer.setImage(image);
-
-            customerResDTO = customer.toCustomerResDTO();
-
-        }
-        return customerResDTO;
+        Customer customer = customerCreateDTO.toCustomer();
+        locationRegionRepository.save(customer.getLocationRegion());
+        customerRepository.save(customer);
     }
 
     @Override
-    public CustomerResDTO create(CustomerCreateDTO customerCreateDTO, MultipartFile[] multipartFile) throws IOException {
-        return null;
+    public void update(CustomerCreateDTO customerCreateDTO) {
+        Optional<Customer> customer = customerRepository.findById(customerCreateDTO.getId());
+        Customer customerUp = customerCreateDTO.toCustomer();
+        locationRegionRepository.save(customerUp.getLocationRegion().setId(customer.get().getLocationRegion().getId()));
+        customerRepository.save(customerUp);
+
+
     }
 
     @Override
-    public Optional<Customer> findByName(String name) {
-        return Optional.empty();
+    public void delete(Long id) {
+
     }
 
-    @Override
-    public CustomerResDTO update(CustomerCreateDTO customerCreateDTO, MultipartFile multipartFile, Customer customer) throws IOException {
-        CustomerResDTO customerResDTO = new CustomerResDTO();
-        if (multipartFile == null) {
 
-            LocationRegion locationRegion = customer.getLocationRegion();
-            locationRegionRepository.save(locationRegion);
-            Customer customerUp = customerCreateDTO.toCustomer(locationRegion);
-            customerUp.setId(customer.getId());
-            customerUp = customerRepository.save(customerUp);
-
-            customerResDTO = customerUp.toCustomerResDTO();
-
-        } else {
-            LocationRegion locationRegion = customer.getLocationRegion();
-            locationRegionRepository.save(locationRegion);
-            Customer customerUp = customerCreateDTO.toCustomer(locationRegion);
-            customerUp.setId(customer.getId());
-            customerUp = customerRepository.save(customerUp);
-
-            String str = uploadService.uploadFile(multipartFile);
-            String fileUlr = str.split("=")[0];
-            String cloudId = str.split("=")[1];
-
-            Image image = new Image();
-            image.setFileUrl(fileUlr);
-            image.setCloudId(cloudId);
-            imageRepository.save(image);
-            customerUp.setImage(image);
-            customerResDTO = customerUp.toCustomerResDTO();
-        }
-        return customerResDTO;
-    }
-
-    @Override
-    public CustomerResDTO update(CustomerCreateDTO customerCreateDTO, MultipartFile[] multipartFile, Customer customer) throws IOException {
-        return null;
-    }
 }

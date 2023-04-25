@@ -16,8 +16,11 @@ public class CategoryListCreateRequest implements Validator {
 
     private String name;
 
+    private Long id;
+
     public Category toCategory(){
         return new Category()
+                .setId(id)
                 .setName(name);
     }
 

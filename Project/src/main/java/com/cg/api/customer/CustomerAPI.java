@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/customer")
+@RequestMapping("/api/customers")
 @AllArgsConstructor
 public class CustomerAPI {
 
@@ -38,26 +38,27 @@ public class CustomerAPI {
     }
 
 
+
+
+
     @PostMapping
-    public ResponseEntity<?> create(@Validated CustomerCreateDTO customerCreateDTO, BindingResult bindingResult, MultipartFile multipartFile) throws IOException {
+    public ResponseEntity<?> create(@Validated @RequestBody CustomerCreateDTO customerCreateDTO, BindingResult bindingResult) throws IOException {
 
         if (bindingResult.hasErrors()) {
            return appUtils.mapErrorToResponse(bindingResult);
         }
 
-        CustomerResDTO customerResDTO = customerService.create(customerCreateDTO, multipartFile);
+        customerService.create(customerCreateDTO);
 
-        return new ResponseEntity<>(customerResDTO, HttpStatus.CREATED);
+        return new ResponseEntity<>( HttpStatus.CREATED);
     }
 
     @PatchMapping("{idCustomer}")
-    public ResponseEntity<CustomerResDTO> update(@PathVariable Long idCustomer, CustomerCreateDTO customerCreateDTO, MultipartFile multipartFiles, BindingResult bindingResult) throws IOException {
-        Optional<Customer> customerOptional = customerService.findById(idCustomer);
-        if (!customerOptional.isPresent()) {
-            throw new ResourceNotFoundException("Customer not valid");
-        }
+    public ResponseEntity<CustomerResDTO> update(@PathVariable Long idCustomer,@RequestBody CustomerCreateDTO customerCreateDTO, BindingResult bindingResult) throws IOException {
 
-        CustomerResDTO customerResDTO = customerService.update(customerCreateDTO, multipartFiles, customerOptional.get());
-        return new ResponseEntity<>(customerResDTO, HttpStatus.OK);
+        customerCreateDTO.setId(idCustomer);
+        customerService.update(customerCreateDTO);
+        return new ResponseEntity<>(HttpStatus.OK);
+
     }
 }
