@@ -1,7 +1,7 @@
 package com.cg.service.category;
 
 
-import com.cg.model.Category;
+import com.cg.model.product.Category;
 import lombok.*;
 
 @Getter

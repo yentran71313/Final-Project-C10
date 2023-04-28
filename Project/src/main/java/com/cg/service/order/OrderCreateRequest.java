@@ -2,7 +2,6 @@ package com.cg.service.order;
 
 import com.cg.model.*;
 import com.cg.model.customer.Customer;
-import com.cg.service.product.ProductCreateRequest;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

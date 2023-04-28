@@ -1,9 +1,10 @@
 package com.cg.api.product;
 
 
-import com.cg.service.product.ProductCreateRequest;
-import com.cg.service.product.ProductListRequest;
-import com.cg.service.product.ProductListResponse;
+import com.cg.model.product.ProductCreateRequest;
+import com.cg.model.product.ProductListRequest;
+import com.cg.model.product.ProductListResponse;
+
 import com.cg.service.product.ProductService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -28,18 +29,16 @@ public class ProductApi {
         return new ResponseEntity<>(productService.getAllAndSearch(request, pageable), HttpStatus.OK);
     }
 
-//    @GetMapping
-//    public ResponseEntity<?> findAll(ProductListRequest request, Pageable pageable){
-//        return new ResponseEntity<>(productRepository.getAllProduct( pageable), HttpStatus.OK);
-//    }
+
 
     @GetMapping("/{idProduct}")
     public ResponseEntity<?> findById(@PathVariable Long idProduct){
         return new ResponseEntity<>(productService.findById(idProduct),HttpStatus.NOT_FOUND);
+
     }
 
     @PostMapping
-    public ResponseEntity<ProductListResponse> create(@RequestBody ProductCreateRequest productCreateRequest,MultipartFile[] multipartFiles, BindingResult bindingResult) throws IOException {
+    public ResponseEntity<ProductListResponse> create(@RequestBody ProductCreateRequest productCreateRequest) {
 
          productService.create(productCreateRequest);
         return new ResponseEntity<>(HttpStatus.CREATED);

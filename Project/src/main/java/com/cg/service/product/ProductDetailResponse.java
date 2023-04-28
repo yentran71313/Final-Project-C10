@@ -1,7 +1,7 @@
 package com.cg.service.product;
 
 import com.cg.model.Image;
-import com.cg.model.Product;
+import com.cg.model.product.Product;
 import lombok.*;
 
 import java.util.List;

@@ -1,5 +1,8 @@
 package com.cg.model;
 
+import com.cg.model.customer.Customer;
+import com.cg.model.product.Brand;
+import com.cg.model.product.Product;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,5 +31,6 @@ public class Image {
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
+
 
 }

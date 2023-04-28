@@ -3,6 +3,7 @@ package com.cg.api.order;
 import com.cg.exception.DataInputException;
 import com.cg.model.*;
 import com.cg.model.customer.Customer;
+import com.cg.model.product.Product;
 import com.cg.service.order.OrderDetailRequest;
 import com.cg.service.order.OrderDetailResponse;
 import com.cg.service.order.OrderService;

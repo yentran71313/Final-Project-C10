@@ -1,11 +1,12 @@
 package com.cg.api.order;
 
 import com.cg.model.*;
+import com.cg.model.product.Product;
+import com.cg.model.product.ProductListResponse;
 import com.cg.service.order.OrderService;
 import com.cg.service.orderItems.OrderItemCreateRequest;
 import com.cg.service.orderItems.OrderItemDetailResponse;
 import com.cg.service.orderItems.OrderItemService;
-import com.cg.service.product.ProductListResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -9,7 +9,6 @@ import com.cg.repository.OrderItemRepository;
 import com.cg.repository.OrderRepository;
 import com.cg.service.baseService.IBaseService;
 import com.cg.service.orderItems.OrderItemCreateRequest;
-import com.cg.service.product.ProductCreateRequest;
 import com.cg.util.AppConstant;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
