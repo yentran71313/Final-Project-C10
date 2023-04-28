@@ -5,6 +5,9 @@ import com.cg.exception.ResourceNotFoundException;
 import com.cg.model.*;
 import com.cg.model.auth.User;
 import com.cg.model.customer.Customer;
+import com.cg.model.customer.LocationRegion;
+import com.cg.repository.CustomerRepository;
+import com.cg.repository.LocationRegionRepository;
 import com.cg.repository.OrderItemRepository;
 import com.cg.repository.OrderRepository;
 import com.cg.service.baseService.IBaseService;
@@ -29,7 +32,9 @@ public class OrderService implements IBaseService<OrderListResponse, OrderListRe
     private final OrderItemRepository orderItemRepository;
 
 
-//    private final CustomerRepository customerRepository;
+    private final CustomerRepository customerRepository;
+
+    private final LocationRegionRepository locationRegionRepository;
 
     @Override
     public Page<OrderListResponse> getAllAndSearch(OrderListRequest request, Pageable pageable) {
@@ -62,8 +67,13 @@ public class OrderService implements IBaseService<OrderListResponse, OrderListRe
         try {
             Order order = new Order();
             order.setTotalAmount(orderDetailRequest.getTotalAmount());
+            LocationRegion locationRegion = orderDetailRequest.getCustomer().getLocationRegion();
+            locationRegion = locationRegionRepository.save(locationRegion);
             Customer customer = orderDetailRequest.getCustomer();
-            order.setCustomerOrder(orderDetailRequest.getCustomer());
+//            customer.setPhoneNumber(customer.getPhoneNumber());
+            customer.setLocationRegion(locationRegion);
+            customer = customerRepository.save(customer);
+            order.setCustomerOrder(customer);
 
             order = orderRepository.save(order);
 
@@ -71,7 +81,9 @@ public class OrderService implements IBaseService<OrderListResponse, OrderListRe
 
             for (OrderItemCreateRequest item : orderItems) {
                 OrderItem orderItem = item.toOrderItem();
-                orderItemRepository.save(orderItem.setOrder(order));
+                orderItem.setOrder(order);
+                orderItem.setAmount(item.getAmount());
+                orderItemRepository.save(orderItem);
             }
             success = true;
         } catch (Exception e) {

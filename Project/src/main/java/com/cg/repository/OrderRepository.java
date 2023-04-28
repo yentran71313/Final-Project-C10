@@ -19,7 +19,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
             "o.id, " +
             "o.totalAmount, " +
             "o.customerOrder.fullName," +
-            "o.customerOrder.phone) " +
+            "o.customerOrder.phoneNumber) " +
             "from Order  o " +
             "where (:#{#request.search} is null or o.customerOrder.fullName  like :#{#request.search})")
     Page<OrderListResponse> getAllAndSearch(OrderListRequest request, Pageable pageable);
