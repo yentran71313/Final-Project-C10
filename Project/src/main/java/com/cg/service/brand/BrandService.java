@@ -7,7 +7,7 @@ import com.cg.model.Product;
 import com.cg.repository.BrandRepository;
 import com.cg.repository.ImageRepository;
 
-import com.cg.service.baseservice.IBaseService;
+import com.cg.service.baseService.IBaseService;
 import com.cg.service.upload.UploadService;
 import com.cg.util.AppConstant;
 import com.cg.util.UploadUtil;
@@ -51,7 +51,7 @@ public class BrandService implements IBaseService<BrandListResponse,BrandListReq
     public void update(BrandListCreateRequest brandListCreateRequest) {
         Image image = new Image().setId(brandListCreateRequest.getImage());
 //        Brand brand = brandRepository.save(brandListCreateRequest.toBrand());
-        image.setBrand(brandListCreateRequest.toBrand());
+//        image.setBrand(brandListCreateRequest.toBrand());
         imageRepository.save(image);
 
     }

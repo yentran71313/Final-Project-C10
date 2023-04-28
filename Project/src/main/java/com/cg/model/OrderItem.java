@@ -1,6 +1,7 @@
 package com.cg.model;
 
 
+import com.cg.service.orderItems.OrderItemDetailResponse;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,14 +17,17 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @Table(name = "order_item")
 public class OrderItem {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
     private Long id;
 
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product productOrder;
 
+    @Column(name = "quantity")
     private long quantity;
 
     private BigDecimal amount;
@@ -31,4 +35,23 @@ public class OrderItem {
     @ManyToOne
     @JoinColumn(name = "order_id")
     private Order order;
+
+    public OrderItemDetailResponse toOrderItemDetailResponse(){
+        return new OrderItemDetailResponse()
+                .setId(id)
+                .setQuantity(quantity)
+                .setAmount(amount)
+                .setProductId(productOrder.getId())
+                .setOrderId(order.getId());
+    }
+
+    public OrderItemDetailResponse toOrderItemDetailWithCountQuantityResponse(long totalOrderItemQuantity){
+        return new OrderItemDetailResponse()
+                .setId(id)
+                .setQuantity(quantity)
+                .setAmount(amount)
+                .setProductId(productOrder.getId())
+                .setOrderId(order.getId())
+                .setTotalOrderItemQuantity(totalOrderItemQuantity);
+    }
 }

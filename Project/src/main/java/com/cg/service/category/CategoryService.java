@@ -5,7 +5,7 @@ import com.cg.model.Category;
 import com.cg.model.Image;
 import com.cg.model.Product;
 import com.cg.repository.CategoryRepository;
-import com.cg.service.baseservice.IBaseService;
+import com.cg.service.baseService.IBaseService;
 import com.cg.service.product.ProductDetailResponse;
 import com.cg.util.AppConstant;
 import lombok.AllArgsConstructor;

@@ -12,7 +12,7 @@ import com.cg.repository.ImageRepository;
 import com.cg.repository.ProductRepository;
 
 
-import com.cg.service.baseservice.IBaseService;
+import com.cg.service.baseService.IBaseService;
 import com.cg.service.upload.UploadService;
 import com.cg.util.AppConstant;
 import com.cg.util.UploadUtil;
@@ -61,7 +61,13 @@ public class ProductService implements IBaseService<ProductListResponse, Product
         return Optional.of(new ProductDetailResponse(productOptional.get()));
     }
 
-
+    public Optional<Product> findProductById(Long id) {
+        Optional<Product> productOptional = productRepository.findById(id);
+        if (!productOptional.isPresent()){
+            throw new ResourceNotFoundException(String.format(AppConstant.MESSAGE_NO_EXIST, "Product"));
+        }
+        return productRepository.findById(id);
+    }
 
     @Override
     public void create(ProductCreateRequest productCreateRequest) {
@@ -72,10 +78,6 @@ public class ProductService implements IBaseService<ProductListResponse, Product
             imageRepository.save(image);
         }
     }
-
-
-
-
 
     @Override
     public void update(ProductCreateRequest productCreateRequest)  {

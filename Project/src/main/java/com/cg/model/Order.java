@@ -22,6 +22,7 @@ public class Order extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "total", nullable = false, precision = 10, scale = 2)
     private BigDecimal totalAmount;
 
     @ManyToOne
