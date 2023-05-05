@@ -13,20 +13,15 @@ import com.cg.repository.ProductRepository;
 
 
 import com.cg.service.baseservice.IBaseService;
-import com.cg.service.upload.UploadService;
+
 import com.cg.util.AppConstant;
-import com.cg.util.UploadUtil;
+
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 
