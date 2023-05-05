@@ -68,6 +68,9 @@ public class ProductService implements IBaseService<ProductListResponse, Product
         checkExistDb(productCreateRequest);
         Product product = productRepository.save(productCreateRequest.toProduct());
         for (Image image : product.getImages()) {
+            Optional<Image> imageCr = imageRepository.findById(image.getId());
+            image.setFileUrl(imageCr.get().getFileUrl());
+            image.setCloudId(imageCr.get().getCloudId());
             image.setProduct(product);
             imageRepository.save(image);
         }
@@ -84,11 +87,18 @@ public class ProductService implements IBaseService<ProductListResponse, Product
         if (!productOptional.isPresent()){
             throw  new ResourceNotFoundException(String.format(AppConstant.MESSAGE_NO_EXIST, "Product"));
         }
+        Product productCur = productOptional.get();
+        for (Image image:productCur.getImages()
+             ) {
+            image.setProduct(null);
+        }
         Product product = productRepository.save(productCreateRequest.toProduct());
-        for (Image image : product.getImages()) {
+        for (Image image: product.getImages()
+             ) {
             image.setProduct(product);
             imageRepository.save(image);
         }
+
     }
 
     @Override
