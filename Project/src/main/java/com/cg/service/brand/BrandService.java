@@ -1,14 +1,23 @@
 package com.cg.service.brand;
 
+
+import com.cg.model.product.Brand;
+
 import com.cg.exception.ResourceNotFoundException;
-import com.cg.model.Brand;
+
 import com.cg.model.Image;
-import com.cg.model.Product;
 import com.cg.repository.BrandRepository;
 
 
+<<<<<<< HEAD
 import com.cg.service.baseservice.IBaseService;
 
+=======
+import com.cg.service.baseService.IBaseService;
+import com.cg.service.upload.UploadService;
+import com.cg.util.AppConstant;
+import com.cg.util.UploadUtil;
+>>>>>>> development
 import lombok.AllArgsConstructor;
 
 import org.springframework.data.domain.Page;
@@ -46,8 +55,13 @@ public class BrandService implements IBaseService<BrandListResponse,BrandListReq
 
     @Override
     public void update(BrandListCreateRequest brandListCreateRequest) {
+<<<<<<< HEAD
         Brand brand = brandListCreateRequest.toBrand();
         brandRepository.save(brand);
+=======
+        Image image = new Image().setId(brandListCreateRequest.getImage());
+        imageRepository.save(image);
+>>>>>>> development
 
     }
 
@@ -55,5 +69,8 @@ public class BrandService implements IBaseService<BrandListResponse,BrandListReq
     public void delete(Long id) {
 
     }
+<<<<<<< HEAD
 
+=======
+>>>>>>> development
 }

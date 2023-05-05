@@ -1,19 +1,30 @@
 package com.cg.service.product;
 
+
+import com.cg.model.product.Brand;
+import com.cg.model.product.Category;
+
 import com.cg.exception.DataInputException;
 import com.cg.exception.ResourceNotFoundException;
-import com.cg.model.Brand;
-import com.cg.model.Category;
+
 import com.cg.model.Image;
-import com.cg.model.Product;
+import com.cg.model.product.Product;
+import com.cg.model.product.ProductCreateRequest;
+import com.cg.model.product.ProductListRequest;
+import com.cg.model.product.ProductListResponse;
 import com.cg.repository.BrandRepository;
 import com.cg.repository.CategoryRepository;
 import com.cg.repository.ImageRepository;
 import com.cg.repository.ProductRepository;
 
 
+<<<<<<< HEAD
 import com.cg.service.baseservice.IBaseService;
 
+=======
+import com.cg.service.baseService.IBaseService;
+import com.cg.service.upload.UploadService;
+>>>>>>> development
 import com.cg.util.AppConstant;
 
 import lombok.AllArgsConstructor;
@@ -22,13 +33,20 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+<<<<<<< HEAD
 import java.util.Optional;
+=======
+import java.io.IOException;
+import java.util.*;
+>>>>>>> development
 
 
 @Service
 @AllArgsConstructor
 @Transactional
-public class ProductService implements IBaseService<ProductListResponse, ProductListRequest,ProductCreateRequest, ProductDetailResponse> {
+public class ProductService implements IBaseService<ProductListResponse, ProductListRequest, ProductCreateRequest, Product> {
+
+
 
 
     private final ProductRepository productRepository;
@@ -48,12 +66,16 @@ public class ProductService implements IBaseService<ProductListResponse, Product
     }
 
     @Override
-    public Optional<ProductDetailResponse> findById(Long id) {
+    public Optional<Product> findById(Long id) {
+        return productRepository.findById(id);
+    }
+
+    public Optional<Product> findProductById(Long id) {
         Optional<Product> productOptional = productRepository.findById(id);
         if (!productOptional.isPresent()){
             throw new ResourceNotFoundException(String.format(AppConstant.MESSAGE_NO_EXIST, "Product"));
         }
-        return Optional.of(new ProductDetailResponse(productOptional.get()));
+        return productRepository.findById(id);
     }
 
 
@@ -70,10 +92,6 @@ public class ProductService implements IBaseService<ProductListResponse, Product
             imageRepository.save(image);
         }
     }
-
-
-
-
 
     @Override
     public void update(ProductCreateRequest productCreateRequest)  {

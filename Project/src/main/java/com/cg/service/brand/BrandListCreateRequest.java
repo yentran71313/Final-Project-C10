@@ -1,7 +1,8 @@
 package com.cg.service.brand;
 
-import com.cg.model.Brand;
+
 import com.cg.model.Image;
+import com.cg.model.product.Brand;
 import lombok.*;
 
 import javax.validation.constraints.NotNull;

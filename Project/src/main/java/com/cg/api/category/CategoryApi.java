@@ -1,12 +1,11 @@
 package com.cg.api.category;
 
 
-import com.cg.model.Category;
+import com.cg.model.product.Category;
 import com.cg.service.category.CategoryListCreateRequest;
 import com.cg.service.category.CategoryListRequest;
 import com.cg.service.category.CategoryListResponse;
 import com.cg.service.category.CategoryService;
-import com.cg.util.AppUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,7 +23,6 @@ public class CategoryApi {
 
     private final CategoryService categoryService;
 
-    private final AppUtil appUtil;
 
     @GetMapping
     public ResponseEntity<Page<CategoryListResponse>> findAll (CategoryListRequest request, Pageable pageable){
