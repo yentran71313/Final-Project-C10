@@ -6,7 +6,8 @@ import com.cg.model.product.ProductListRequest;
 import com.cg.model.product.ProductListResponse;
 
 import com.cg.service.product.ProductService;
-import com.cg.util.AppUtil;
+
+import com.cg.utils.AppUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,7 +25,7 @@ import java.io.IOException;
 public class ProductApi {
     private final ProductService productService;
 
-    private final AppUtil appUtil;
+    private final AppUtils appUtil;
 
 
     @GetMapping
@@ -41,16 +42,12 @@ public class ProductApi {
     }
 
     @PostMapping
-<<<<<<< HEAD
+
     public ResponseEntity<?> create(@RequestBody ProductCreateRequest productCreateRequest, BindingResult bindingResult) throws IOException {
         new ProductCreateRequest().validate(productCreateRequest,bindingResult);
         if (bindingResult.hasErrors()){
             return appUtil.mapErrorToResponse(bindingResult);
         }
-=======
-    public ResponseEntity<ProductListResponse> create(@RequestBody ProductCreateRequest productCreateRequest) {
-
->>>>>>> development
          productService.create(productCreateRequest);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }

@@ -18,13 +18,10 @@ import com.cg.repository.ImageRepository;
 import com.cg.repository.ProductRepository;
 
 
-<<<<<<< HEAD
-import com.cg.service.baseservice.IBaseService;
 
-=======
+
 import com.cg.service.baseService.IBaseService;
-import com.cg.service.upload.UploadService;
->>>>>>> development
+
 import com.cg.util.AppConstant;
 
 import lombok.AllArgsConstructor;
@@ -33,12 +30,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-<<<<<<< HEAD
+
 import java.util.Optional;
-=======
-import java.io.IOException;
-import java.util.*;
->>>>>>> development
+
 
 
 @Service
