@@ -51,6 +51,11 @@ public class CategoryApi {
         return new  ResponseEntity<>(HttpStatus.OK);
     }
 
+    @DeleteMapping ("/{idCategory}")
+    private ResponseEntity<?> delete(@PathVariable Long idCategory){
+        categoryService.delete(idCategory);
+        return new  ResponseEntity<>(HttpStatus.OK);
+    }
 
 
 

@@ -55,7 +55,7 @@ public class CategoryService implements IBaseService<CategoryListResponse, Categ
 
     @Override
     public void delete(Long id) {
-
+        categoryRepository.deleteById(id);
     }
 
     public Optional<Category> findByName(String name) {
