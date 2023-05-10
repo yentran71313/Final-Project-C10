@@ -12,9 +12,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BrandRepository extends JpaRepository<Brand, Long> {
 
-    @Query("select new com.cg.service.brand.BrandListResponse(b.id,b.name,b.image.fileUrl) " +
+    @Query("select new com.cg.service.brand.BrandListResponse(b.id,b.name,b.image.fileUrl,b.image.id) " +
             "from Brand b left join Image img on img.id = b.image.id " +
-            "where :#{#request.search} is null or b.name  like :#{#request.search}")
+            "where (:#{#request.search} is null or b.name  like :#{#request.search}) and b.deleted=:#{#request.deleted} ")
     Page<BrandListResponse> getAllBrand(BrandListRequest request, Pageable pageable);
 
 

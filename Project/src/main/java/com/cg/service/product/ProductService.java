@@ -18,21 +18,21 @@ import com.cg.repository.ImageRepository;
 import com.cg.repository.ProductRepository;
 
 
-
-
 import com.cg.service.baseService.IBaseService;
-
+import com.cg.service.upload.UploadService;
 import com.cg.util.AppConstant;
-
+import com.cg.util.UploadUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
-
-import java.util.Optional;
-
+import java.io.IOException;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -56,7 +56,11 @@ public class ProductService implements IBaseService<ProductListResponse, Product
         if(request.getSearch() != null){
             request.setSearch("%" + request.getSearch() + "%");
         }
-        return productRepository.getAllAndSearch(request, pageable);
+        Page<Product> products = productRepository.getAllAndSearch(pageable,request);
+
+        List<ProductListResponse> productListResponses = products.stream().map(ProductListResponse::new).collect(Collectors.toList());
+        Page<ProductListResponse> page = new PageImpl<>(productListResponses, pageable, products.getTotalElements());
+        return page;
     }
 
     @Override
@@ -72,16 +76,20 @@ public class ProductService implements IBaseService<ProductListResponse, Product
         return productRepository.findById(id);
     }
 
-
+    public ProductDetailResponse findProductDetailById(Long id) {
+        Optional<Product> productOptional = productRepository.findById(id);
+        if (!productOptional.isPresent()){
+            throw new ResourceNotFoundException(String.format(AppConstant.MESSAGE_NO_EXIST, "Product"));
+        }
+        ProductDetailResponse productDetailResponse = new ProductDetailResponse(productOptional.get());
+        return productDetailResponse;
+    }
 
     @Override
     public void create(ProductCreateRequest productCreateRequest) {
         checkExistDb(productCreateRequest);
         Product product = productRepository.save(productCreateRequest.toProduct());
         for (Image image : product.getImages()) {
-            Optional<Image> imageCr = imageRepository.findById(image.getId());
-            image.setFileUrl(imageCr.get().getFileUrl());
-            image.setCloudId(imageCr.get().getCloudId());
             image.setProduct(product);
             imageRepository.save(image);
         }
@@ -94,18 +102,11 @@ public class ProductService implements IBaseService<ProductListResponse, Product
         if (!productOptional.isPresent()){
             throw  new ResourceNotFoundException(String.format(AppConstant.MESSAGE_NO_EXIST, "Product"));
         }
-        Product productCur = productOptional.get();
-        for (Image image:productCur.getImages()
-             ) {
-            image.setProduct(null);
-        }
         Product product = productRepository.save(productCreateRequest.toProduct());
-        for (Image image: product.getImages()
-             ) {
+        for (Image image : product.getImages()) {
             image.setProduct(product);
             imageRepository.save(image);
         }
-
     }
 
     @Override

@@ -11,4 +11,5 @@ import lombok.Setter;
 @NoArgsConstructor
 public class BrandListRequest {
     private String search;
+    private boolean deleted;
 }
