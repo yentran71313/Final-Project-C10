@@ -1,6 +1,6 @@
 package com.cg.repository;
 
-import com.cg.model.Category;
+import com.cg.model.product.Category;
 import com.cg.service.category.CategoryListRequest;
 import com.cg.service.category.CategoryListResponse;
 import org.springframework.data.domain.Page;

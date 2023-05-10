@@ -2,7 +2,7 @@ package com.cg.service.category;
 
 
 
-import com.cg.model.Category;
+import com.cg.model.product.Category;
 import lombok.*;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
@@ -16,8 +16,11 @@ public class CategoryListCreateRequest implements Validator {
 
     private String name;
 
+    private Long id;
+
     public Category toCategory(){
         return new Category()
+                .setId(id)
                 .setName(name);
     }
 

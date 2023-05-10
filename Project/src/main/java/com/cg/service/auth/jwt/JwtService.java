@@ -15,7 +15,7 @@ import java.util.Date;
 @Service
 public class JwtService {
 
-    private static final String SECRET_KEY = "Hihihihi";
+    private static final String SECRET_KEY = "ChaoCacBanDenVoiDuAnCuaChungToiLanNayVaDungQuenDeLaiBinhLuan";
     private static final long JWT_TOKEN_VALIDITY = 1000L * 60 * 60;
     private static final Logger logger = LoggerFactory.getLogger(JwtService.class.getName());
 

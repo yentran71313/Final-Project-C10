@@ -1,7 +1,29 @@
 package com.cg.service.brand;
 
-import lombok.Value;
 
-@Value
+import com.cg.model.Image;
+import com.cg.model.product.Brand;
+import lombok.*;
+
+import javax.validation.constraints.NotNull;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class BrandListCreateRequest {
+    @NotNull(message = "Name cannot be null")
+    private String name;
+
+    private Long id;
+
+    private Long image;
+
+    public Brand toBrand(){
+        return new Brand()
+                .setName(name)
+                .setId(id)
+                .setImage(new Image().setId(image));
+
+    }
 }

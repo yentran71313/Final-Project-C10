@@ -1,6 +1,7 @@
 package com.cg.model;
 
 
+import com.cg.model.customer.Customer;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,6 +22,7 @@ public class Order extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "total", nullable = false, precision = 10, scale = 2)
     private BigDecimal totalAmount;
 
     @ManyToOne
@@ -29,6 +31,7 @@ public class Order extends BaseEntity {
 
     @OneToMany(mappedBy = "order")
     private List<OrderItem> orderItems;
+
 
 
 

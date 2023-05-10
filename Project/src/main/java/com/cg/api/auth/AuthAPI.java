@@ -3,7 +3,9 @@ package com.cg.api.auth;
 
 import com.cg.exception.EmailExistsException;
 import com.cg.model.JwtResponse;
+import com.cg.model.auth.Staff;
 import com.cg.model.auth.User;
+import com.cg.model.dto.authDTO.StaffInfoDTO;
 import com.cg.model.dto.authDTO.StaffReqDTO;
 import com.cg.model.dto.authDTO.UserLoginDTO;
 import com.cg.service.auth.jwt.JwtService;
@@ -28,6 +30,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/api/auth")
 public class AuthAPI {
@@ -47,11 +51,12 @@ public class AuthAPI {
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@Validated @RequestBody StaffReqDTO staffReqDTO, BindingResult bindingResult) {
+
         if (bindingResult.hasErrors()) {
             return appUtils.mapErrorToResponse(bindingResult);
         }
 
-        Boolean existUsername = userService.existByUserName(staffReqDTO.getUserName());
+        Boolean existUsername = userService.existByUserName(staffReqDTO.getUsername());
         if (existUsername) {
             throw new EmailExistsException("User name is exists");
         }
@@ -63,7 +68,11 @@ public class AuthAPI {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody UserLoginDTO userLoginDTO) {
+    public ResponseEntity<?> login(@Validated @RequestBody UserLoginDTO userLoginDTO, BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()){
+            return appUtils.mapErrorToResponse(bindingResult);
+        }
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(userLoginDTO.getUsername(), userLoginDTO.getPassword()));
@@ -73,12 +82,13 @@ public class AuthAPI {
             String jwt = jwtService.generateTokenLogin(authentication);
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
             User currentUser = userService.getByUserName(userLoginDTO.getUsername());
-
+            Optional<StaffInfoDTO> currentStaff = staffService.getStaffInfoByUsername(userLoginDTO.getUsername());
             JwtResponse jwtResponse = new JwtResponse(
                     jwt,
                     currentUser.getId(),
                     userDetails.getUsername(),
                     currentUser.getUsername(),
+                    currentStaff.get().getFullName(),
                     userDetails.getAuthorities()
             );
 
