@@ -1,15 +1,12 @@
 package com.cg.api.product;
 
 
-import com.cg.exception.ResourceNotFoundException;
-import com.cg.model.product.Product;
 import com.cg.model.product.ProductCreateRequest;
 import com.cg.model.product.ProductListRequest;
 import com.cg.model.product.ProductListResponse;
 
 import com.cg.service.product.ProductService;
 
-import com.cg.util.AppConstant;
 import com.cg.utils.AppUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -21,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "api/products")
@@ -41,12 +37,7 @@ public class ProductApi {
 
     @GetMapping("/{idProduct}")
     public ResponseEntity<?> findById(@PathVariable Long idProduct){
-        Optional<Product> productOptional = productService.findById(idProduct);
-        if (!productOptional.isPresent()){
-            throw new ResourceNotFoundException(String.format(AppConstant.MESSAGE_NO_EXIST, "Product"));
-        }
-        ProductListResponse productListResponse = productOptional.get().toProductListResponse();
-        return new ResponseEntity<>(productListResponse,HttpStatus.OK);
+        return new ResponseEntity<>(productService.findProductDetailById(idProduct),HttpStatus.OK);
 
     }
 

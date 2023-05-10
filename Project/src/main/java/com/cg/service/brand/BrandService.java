@@ -1,6 +1,8 @@
 package com.cg.service.brand;
 
 
+import com.cg.exception.DataInputException;
+import com.cg.exception.ResourceNotFoundException;
 import com.cg.model.product.Brand;
 
 
@@ -10,9 +12,10 @@ import com.cg.repository.BrandRepository;
 
 
 import com.cg.repository.ImageRepository;
+import com.cg.service.baseService.IBaseService;
 
 
-import com.cg.service.baseservice.IBaseService;
+import com.cg.util.AppConstant;
 import lombok.AllArgsConstructor;
 
 import org.springframework.data.domain.Page;
@@ -28,7 +31,7 @@ import java.util.Optional;
 @Service
 @Transactional
 @AllArgsConstructor
-public class BrandService implements IBaseService<BrandListResponse,BrandListRequest, BrandListCreateRequest, Brand> {
+public class BrandService implements IBaseService<BrandListResponse, BrandListRequest, BrandListCreateRequest, BrandListResponse> {
 
     private final BrandRepository brandRepository;
 
@@ -40,7 +43,12 @@ public class BrandService implements IBaseService<BrandListResponse,BrandListReq
     }
 
     @Override
-    public Optional<Brand> findById(Long id) {
+    public Optional<BrandListResponse> findById(Long id) {
+//        Optional<Brand> brandOptional = brandRepository.findById(id);
+//        if (!brandOptional.isPresent()){
+//            throw new ResourceNotFoundException(String.format(AppConstant.MESSAGE_NO_EXIST, "Brand"));
+//        }
+//        return Optional.of(new BrandListResponse(brandOptional.get()));
         return Optional.empty();
     }
 
@@ -52,18 +60,28 @@ public class BrandService implements IBaseService<BrandListResponse,BrandListReq
 
     @Override
     public void update(BrandListCreateRequest brandListCreateRequest) {
-
         Brand brand = brandListCreateRequest.toBrand();
-
-        Image image = new Image().setId(brandListCreateRequest.getImage());
-        imageRepository.save(image);
-
-
+        brandRepository.save(brand);
     }
 
     @Override
     public void delete(Long id) {
-
+        Optional<Brand> brandOptional = brandRepository.findById(id);
+        if(!brandOptional.isPresent()){
+            throw new DataInputException("Sản phẩm không tồn tại!");
+        }
+        Brand brand = brandOptional.get();
+        brand.setDeleted(true);
+        brandRepository.save(brand);
+    }
+    public void restore(Long id) {
+        Optional<Brand> brandOptional = brandRepository.findById(id);
+        if(!brandOptional.isPresent()){
+            throw new DataInputException("Sản phẩm không tồn tại!");
+        }
+        Brand brand = brandOptional.get();
+        brand.setDeleted(false);
+        brandRepository.save(brand);
     }
 
 }
