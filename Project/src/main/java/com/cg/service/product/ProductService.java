@@ -20,19 +20,21 @@ import com.cg.repository.ProductRepository;
 
 
 
-import com.cg.service.baseService.IBaseService;
 
+import com.cg.service.baseservice.IBaseService;
 import com.cg.util.AppConstant;
 
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import java.util.List;
 import java.util.Optional;
-
+import java.util.stream.Collectors;
 
 
 @Service
@@ -56,7 +58,8 @@ public class ProductService implements IBaseService<ProductListResponse, Product
         if(request.getSearch() != null){
             request.setSearch("%" + request.getSearch() + "%");
         }
-        return productRepository.getAllAndSearch(request, pageable);
+        List<ProductListResponse> list = productRepository.findAllProduct(request, pageable).stream().map(e->e.toProductListResponse()).collect(Collectors.toList());
+        return new PageImpl<>( list,pageable,list.size());
     }
 
     @Override
@@ -98,6 +101,7 @@ public class ProductService implements IBaseService<ProductListResponse, Product
         for (Image image:productCur.getImages()
              ) {
             image.setProduct(null);
+            imageRepository.save(image);
         }
         Product product = productRepository.save(productCreateRequest.toProduct());
         for (Image image: product.getImages()

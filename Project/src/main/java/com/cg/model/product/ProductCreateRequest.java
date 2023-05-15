@@ -73,6 +73,7 @@ public class ProductCreateRequest implements Validator {
                 .setWarranty(warranty)
                 .setCategory(new Category().setId(categoryId))
                 .setBrand(new Brand().setId(brandId))
+                .setAvatar(new Image().setId(avatarId))
                 .setImages(Arrays.stream(images).map(e -> new Image().setId(e)).collect(Collectors.toSet()));
     }
 }

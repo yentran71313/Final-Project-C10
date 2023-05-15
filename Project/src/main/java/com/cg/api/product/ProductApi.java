@@ -37,7 +37,8 @@ public class ProductApi {
 
     @GetMapping("/{idProduct}")
     public ResponseEntity<?> findById(@PathVariable Long idProduct){
-        return new ResponseEntity<>(productService.findById(idProduct),HttpStatus.NOT_FOUND);
+        
+        return new ResponseEntity<>(productService.findById(idProduct),HttpStatus.OK);
 
     }
 
