@@ -17,8 +17,11 @@ public interface ProductRepository extends JpaRepository<Product,Long> {
             "and (:#{#request.brandId} is null or :#{#request.brandId} = p.brand.id) " +
             "and (:#{#request.categoryId} is null or :#{#request.categoryId} = p.category.id)")
     Page<ProductListResponse> getAllAndSearch(ProductListRequest request, Pageable pageable);
-
-
+    @Query("select p  from Product  p  " +
+            "where (:#{#request.search} is null or p.name  like :#{#request.search} or :#{#request.search}  like p.description)  " +
+            "and (:#{#request.brandId} is null or :#{#request.brandId} = p.brand.id) " +
+            "and (:#{#request.categoryId} is null or :#{#request.categoryId} = p.category.id)")
+    Page<Product> findAllProduct(ProductListRequest request,Pageable pageable);
     @Query("select new com.cg.model.product.ProductListResponse(p.id,p.name,p.price,p.marketPrice,p.category.name,p.brand.name,p.warranty) from Product p  where p.id = :id")
     ProductListResponse findProductResById(Long id);
 }

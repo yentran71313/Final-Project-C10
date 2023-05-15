@@ -1,7 +1,6 @@
 package com.cg.model.customer;
 
 import com.cg.model.BaseEntity;
-import com.cg.model.Cart;
 import com.cg.model.Image;
 import com.cg.model.Order;
 import com.cg.model.dto.customerDTO.CustomerResDTO;

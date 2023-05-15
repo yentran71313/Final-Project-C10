@@ -6,6 +6,8 @@ import com.cg.model.product.ProductListRequest;
 import com.cg.model.product.ProductListResponse;
 
 import com.cg.service.product.ProductService;
+
+import com.cg.utils.AppUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,6 +25,8 @@ import java.io.IOException;
 public class ProductApi {
     private final ProductService productService;
 
+    private final AppUtils appUtil;
+
 
     @GetMapping
     public ResponseEntity<Page<ProductListResponse>> findAll(ProductListRequest request, Pageable pageable){
@@ -33,19 +37,28 @@ public class ProductApi {
 
     @GetMapping("/{idProduct}")
     public ResponseEntity<?> findById(@PathVariable Long idProduct){
-        return new ResponseEntity<>(productService.findById(idProduct),HttpStatus.NOT_FOUND);
+        
+        return new ResponseEntity<>(productService.findById(idProduct),HttpStatus.OK);
 
     }
 
     @PostMapping
-    public ResponseEntity<ProductListResponse> create(@RequestBody ProductCreateRequest productCreateRequest) {
 
+    public ResponseEntity<?> create(@RequestBody ProductCreateRequest productCreateRequest, BindingResult bindingResult) throws IOException {
+        new ProductCreateRequest().validate(productCreateRequest,bindingResult);
+        if (bindingResult.hasErrors()){
+            return appUtil.mapErrorToResponse(bindingResult);
+        }
          productService.create(productCreateRequest);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @PatchMapping("{idProduct}")
-    public ResponseEntity<ProductListResponse> update(@PathVariable Long idProduct,ProductCreateRequest productCreateRequest, MultipartFile[] multipartFiles,BindingResult bindingResult) throws IOException {
+    @PatchMapping("/{idProduct}")
+    public ResponseEntity<?> update(@PathVariable Long idProduct,@RequestBody ProductCreateRequest productCreateRequest,BindingResult bindingResult) throws IOException {
+        new ProductCreateRequest().validate(productCreateRequest,bindingResult);
+        if (bindingResult.hasErrors()){
+            return appUtil.mapErrorToResponse(bindingResult);
+        }
         productCreateRequest.setId(idProduct);
         productService.update(productCreateRequest);
         return new ResponseEntity<>(HttpStatus.OK);

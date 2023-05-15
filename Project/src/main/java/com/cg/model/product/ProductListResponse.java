@@ -3,6 +3,7 @@ package com.cg.model.product;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Map;
 
 
@@ -16,9 +17,14 @@ public class ProductListResponse {
     private BigDecimal price;
     private BigDecimal marketPrice;
     private String nameCategory;
+    private Long categoryId;
+    private Long brandId;
     private String nameBrand;
+    private String avatar;
+    private Long avatarId;
     private String warranty;
-    private Map<Long,String> images;
+    private List<String> images;
+    private List<Long> imageIds;
 
     public ProductListResponse(Long id, String name, BigDecimal price, BigDecimal marketPrice, String nameCategory, String nameBrand, String warranty) {
         this.id = id;

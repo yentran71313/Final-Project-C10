@@ -2,7 +2,6 @@ package com.cg.model.product;
 
 
 import com.cg.model.BaseEntity;
-import com.cg.model.CartItem;
 import com.cg.model.Image;
 import com.cg.model.OrderItem;
 import com.cg.model.product.Brand;
@@ -18,6 +17,8 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Entity
 @Getter
@@ -47,6 +48,10 @@ public class Product extends BaseEntity {
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     private Set<Image> images;
 
+    @OneToOne
+    @JoinColumn(name = "avatar_id")
+    private Image avatar;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private Category category;
@@ -55,21 +60,28 @@ public class Product extends BaseEntity {
     @JoinColumn(name = "brand_id")
     private Brand brand;
 
-    @OneToMany(mappedBy = "product")
-    private List<CartItem> cartItems;
 
     @OneToMany(mappedBy = "productOrder")
     private List<OrderItem> orderItems;
 
-    public ProductListResponse toProductListResponse(Map images){
+    public ProductListResponse toProductListResponse(){
+        List<Image> list = images.stream().collect(Collectors.toList());
         return new ProductListResponse()
+                .setId(id)
                 .setName(name)
                 .setPrice(price)
+                .setBrandId(brand.getId())
+                .setCategoryId(category.getId())
                 .setWarranty(warranty)
                 .setMarketPrice(marketPrice)
                 .setNameBrand(brand.getName())
+                .setAvatarId(avatar.getId())
+                .setImageIds(list.stream().map(Image::getId).collect(Collectors.toList()))
                 .setNameCategory(category.getName())
-                .setImages(images).setId(id);
+                .setImages(list.stream().map(Image::getFileUrl).collect(Collectors.toList()))
+                .setAvatar(avatar.getFileUrl());
+
+
 
     }
 }

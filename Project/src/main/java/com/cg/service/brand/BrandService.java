@@ -3,26 +3,26 @@ package com.cg.service.brand;
 
 import com.cg.model.product.Brand;
 
-import com.cg.exception.ResourceNotFoundException;
+
 
 import com.cg.model.Image;
 import com.cg.repository.BrandRepository;
-import com.cg.repository.ImageRepository;
 
-import com.cg.service.baseservice.IBaseService;
-import com.cg.service.upload.UploadService;
-import com.cg.util.AppConstant;
-import com.cg.util.UploadUtil;
+
+import com.cg.repository.ImageRepository;
+import com.cg.service.baseService.IBaseService;
+
+
 import lombok.AllArgsConstructor;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 
-import java.io.IOException;
+
+
 import java.util.Optional;
 
 @Service
@@ -33,6 +33,7 @@ public class BrandService implements IBaseService<BrandListResponse,BrandListReq
     private final BrandRepository brandRepository;
 
     private final ImageRepository imageRepository;
+
     @Override
     public Page<BrandListResponse> getAllAndSearch(BrandListRequest searchRequest, Pageable pageable) {
         return brandRepository.getAllBrand(searchRequest,pageable);
@@ -51,9 +52,12 @@ public class BrandService implements IBaseService<BrandListResponse,BrandListReq
 
     @Override
     public void update(BrandListCreateRequest brandListCreateRequest) {
+
+        Brand brand = brandListCreateRequest.toBrand();
+
         Image image = new Image().setId(brandListCreateRequest.getImage());
-//        Brand brand = brandRepository.save(brandListCreateRequest.toBrand());
         imageRepository.save(image);
+
 
     }
 
@@ -61,4 +65,5 @@ public class BrandService implements IBaseService<BrandListResponse,BrandListReq
     public void delete(Long id) {
 
     }
+
 }

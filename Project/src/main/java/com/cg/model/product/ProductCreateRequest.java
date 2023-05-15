@@ -53,6 +53,16 @@ public class ProductCreateRequest implements Validator {
         if (name.length()==0 || name == ""){
             errors.rejectValue("name","name.length","Name is not valid");
         }
+        if(price == null || price.compareTo(BigDecimal.ZERO) <=0 ){
+            errors.rejectValue("price", "price.value", "price must not be null");
+        }
+
+        if(categoryId <= 0){
+            errors.rejectValue("categoryId", "height.value", "Category is not exist");
+        }
+        if(name == null || name.isEmpty()){
+            errors.rejectValue("name", "description.value", "Name must not be empty");
+        }
     }
 
     public Product toProduct(){
@@ -63,6 +73,7 @@ public class ProductCreateRequest implements Validator {
                 .setWarranty(warranty)
                 .setCategory(new Category().setId(categoryId))
                 .setBrand(new Brand().setId(brandId))
+                .setAvatar(new Image().setId(avatarId))
                 .setImages(Arrays.stream(images).map(e -> new Image().setId(e)).collect(Collectors.toSet()));
     }
 }

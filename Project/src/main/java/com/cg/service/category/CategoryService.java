@@ -3,7 +3,8 @@ package com.cg.service.category;
 
 import com.cg.model.product.Category;
 import com.cg.repository.CategoryRepository;
-import com.cg.service.baseservice.IBaseService;
+import com.cg.service.baseService.IBaseService;
+import com.cg.service.product.ProductDetailResponse;
 
 import com.cg.exception.ResourceNotFoundException;
 
@@ -54,7 +55,7 @@ public class CategoryService implements IBaseService<CategoryListResponse, Categ
 
     @Override
     public void delete(Long id) {
-
+        categoryRepository.deleteById(id);
     }
 
     public Optional<Category> findByName(String name) {

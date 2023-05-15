@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -37,20 +39,27 @@ public class UploadService implements IUploadService{
 
     }
 
-    public Long uploadAndSaveFile(MultipartFile multipartFile) throws IOException {
-        String uuid = UUID.randomUUID().toString();
-        String str = cloudinary.uploader()
-                .upload(multipartFile.getBytes(),
-                        Map.of("public_id",uuid))
-                .get("url")
-                .toString() + "="+ uuid;
-        String fileUrl = str.split("=")[0];
-        String cloudId = str.split("=")[1];
+    public List<Long> uploadAndSaveFile(MultipartFile[] multipartFiles) throws IOException {
 
-        Image image = new Image();
-        image.setCloudId(cloudId);
-        image.setFileUrl(fileUrl);
-        image = imageRepository.save(image);
-        return image.getId();
+        List<Long> images = new ArrayList<>();
+        for (MultipartFile multipartFile: multipartFiles
+             ) {
+            String uuid = UUID.randomUUID().toString();
+            String str = cloudinary.uploader()
+                    .upload(multipartFile.getBytes(),
+                            Map.of("public_id",uuid))
+                    .get("url")
+                    .toString() + "="+ uuid;
+            String fileUrl = str.split("=")[0];
+            String cloudId = str.split("=")[1];
+            Image image = new Image();
+            image.setCloudId(cloudId);
+            image.setFileUrl(fileUrl);
+            image = imageRepository.save(image);
+            images.add(image.getId());
+        }
+
+
+        return images;
     }
 }
