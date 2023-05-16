@@ -58,7 +58,7 @@ public class ProductService implements com.cg.service.baseservice.IBaseService<P
         }
         Page<Product> products = productRepository.getAllAndSearch(pageable,request);
 
-        List<ProductListResponse> productListResponses = products.stream().map(ProductListResponse::new).collect(Collectors.toList());
+        List<ProductListResponse> productListResponses = products.stream().map(e->e.toProductListResponse()).collect(Collectors.toList());
         Page<ProductListResponse> page = new PageImpl<>(productListResponses, pageable, products.getTotalElements());
         return page;
     }
