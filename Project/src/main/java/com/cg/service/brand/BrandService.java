@@ -10,9 +10,9 @@ import com.cg.repository.BrandRepository;
 
 
 import com.cg.repository.ImageRepository;
-import com.cg.service.baseService.IBaseService;
 
 
+import com.cg.service.baseservice.IBaseService;
 import lombok.AllArgsConstructor;
 
 import org.springframework.data.domain.Page;

@@ -10,7 +10,8 @@ import com.cg.repository.CustomerRepository;
 import com.cg.repository.LocationRegionRepository;
 import com.cg.repository.OrderItemRepository;
 import com.cg.repository.OrderRepository;
-import com.cg.service.baseService.IBaseService;
+
+import com.cg.service.baseservice.IBaseService;
 import com.cg.service.orderItems.OrderItemCreateRequest;
 import com.cg.util.AppConstant;
 import lombok.AllArgsConstructor;
