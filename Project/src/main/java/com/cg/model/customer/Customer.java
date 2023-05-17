@@ -52,7 +52,7 @@ public class Customer extends BaseEntity {
                 .setPhoneNumber(phoneNumber)
                 .setEmail(email)
                 .setLocationRegion(locationRegion.toLocationRegionDTO())
-                .setImages(image);
+                .setAvatarId(image.getId());
     }
 
 }

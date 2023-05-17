@@ -24,12 +24,14 @@ public class CustomerResDTO {
     private String provinceName;
     private String districtName;
     private String wardName;
+    private String provinceId;
+    private String wardId;
+    private String districtId;
     private String address;
-    private Image images;
+    private Long avatarId;
     private LocationRegionDTO locationRegion;
 
-
-    public CustomerResDTO(Long id, String fullName, String email, String phoneNumber, String fileUrl, String provinceName, String districtName, String wardName, String address) {
+    public CustomerResDTO(Long id, String fullName, String email, String phoneNumber, String fileUrl, String provinceName, String districtName, String wardName, String provinceId, String wardId, String districtId, String address,Long avatarId) {
         this.id = id;
         this.fullName = fullName;
         this.email = email;
@@ -38,6 +40,10 @@ public class CustomerResDTO {
         this.provinceName = provinceName;
         this.districtName = districtName;
         this.wardName = wardName;
+        this.provinceId = provinceId;
+        this.wardId = wardId;
+        this.districtId = districtId;
         this.address = address;
+        this.avatarId = avatarId;
     }
 }
