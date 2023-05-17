@@ -36,6 +36,8 @@ public class ProductCreateRequest implements Validator {
 
     private Long[] images;
 
+    private String description;
+
     @Override
     public boolean supports(Class<?> clazz) {
         return ProductCreateRequest.class.isAssignableFrom(clazz);
@@ -74,6 +76,7 @@ public class ProductCreateRequest implements Validator {
                 .setCategory(new Category().setId(categoryId))
                 .setBrand(new Brand().setId(brandId))
                 .setAvatar(new Image().setId(avatarId))
+                .setDescription(description)
                 .setImages(Arrays.stream(images).map(e -> new Image().setId(e)).collect(Collectors.toSet()));
     }
 }
