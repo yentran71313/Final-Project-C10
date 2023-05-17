@@ -20,14 +20,24 @@ public class CustomerResDTO {
     private String fullName;
     private String email;
     private String phoneNumber;
-
+    private String fileUrl;
+    private String provinceName;
+    private String districtName;
+    private String wardName;
+    private String address;
     private Image images;
     private LocationRegionDTO locationRegion;
 
-    public CustomerResDTO(Long id, String fullName, String email, String phoneNumber) {
+
+    public CustomerResDTO(Long id, String fullName, String email, String phoneNumber, String fileUrl, String provinceName, String districtName, String wardName, String address) {
         this.id = id;
         this.fullName = fullName;
         this.email = email;
         this.phoneNumber = phoneNumber;
+        this.fileUrl = fileUrl;
+        this.provinceName = provinceName;
+        this.districtName = districtName;
+        this.wardName = wardName;
+        this.address = address;
     }
 }

@@ -3,11 +3,9 @@ package com.cg.service.category;
 
 import com.cg.model.product.Category;
 import com.cg.repository.CategoryRepository;
-import com.cg.service.baseService.IBaseService;
-import com.cg.service.product.ProductDetailResponse;
-
 import com.cg.exception.ResourceNotFoundException;
 
+import com.cg.service.baseservice.IBaseService;
 import com.cg.util.AppConstant;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
