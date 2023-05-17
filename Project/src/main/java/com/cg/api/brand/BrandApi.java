@@ -45,7 +45,7 @@ public class BrandApi {
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
-            throw new DataInputException("Lỗi không thể xóa sản phẩm!");
+            throw new DataInputException("Brand cannot be deleted error!");
         }
     }
     @PatchMapping("/restore/{brandId}")
@@ -55,7 +55,7 @@ public class BrandApi {
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
-            throw new DataInputException("Lỗi không thể khôi phục sản phẩm!");
+            throw new DataInputException("Brand cannot be restored error!");
         }
     }
 }
