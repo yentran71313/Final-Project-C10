@@ -79,8 +79,10 @@ public class Product extends BaseEntity {
                 .setAvatarId(avatar.getId())
                 .setImageIds(list.stream().map(Image::getId).collect(Collectors.toList()))
                 .setNameCategory(category.getName())
+                .setDescription(description)
                 .setImages(list.stream().map(Image::getFileUrl).collect(Collectors.toList()))
                 .setAvatar(avatar.getFileUrl());
+
 
 
 

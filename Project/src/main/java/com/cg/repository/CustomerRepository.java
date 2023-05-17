@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CustomerRepository extends JpaRepository<Customer, Long> {
 
-    @Query("SELECT NEW com.cg.model.dto.customerDTO.CustomerResDTO (cus.id,cus.fullName, cus.email,cus.phoneNumber) " +
+    @Query("SELECT NEW com.cg.model.dto.customerDTO.CustomerResDTO (cus.id,cus.fullName, cus.email,cus.phoneNumber,cus.image.fileUrl,cus.locationRegion.provinceName,cus.locationRegion.districtName,cus.locationRegion.wardName,cus.locationRegion.address) " +
             "from Customer as cus " +
             "LEFT JOIN Image as img on cus.image.id = img.id " +
             "WHERE (:#{#request.search} is null or cus.fullName  like :#{#request.search} or :#{#request.search}  like cus.email) or :#{#request.search} like cus.phoneNumber " +

@@ -33,7 +33,7 @@ public class CustomerAPI {
 
 
     @GetMapping
-    public ResponseEntity<Page<CustomerResDTO>> findAll(CustomerRequestDTO request, Pageable pageable) {
+    public ResponseEntity<Page<CustomerResDTO>> findAll( CustomerRequestDTO request, Pageable pageable) {
         return new ResponseEntity<>(customerService.getAllAndSearch(request, pageable), HttpStatus.OK);
     }
 

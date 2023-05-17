@@ -7,21 +7,16 @@ import com.cg.model.dto.customerDTO.CustomerCreateDTO;
 import com.cg.model.dto.customerDTO.CustomerRequestDTO;
 import com.cg.model.dto.customerDTO.CustomerResDTO;
 import com.cg.repository.CustomerRepository;
-import com.cg.repository.ImageRepository;
 import com.cg.repository.LocationRegionRepository;
 
 import com.cg.service.baseservice.IBaseService;
-import com.cg.service.upload.UploadService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -33,8 +28,11 @@ public class CustomerService implements IBaseService<CustomerResDTO, CustomerReq
     private LocationRegionRepository locationRegionRepository;
 
     @Override
-    public Page<CustomerResDTO> getAllAndSearch(CustomerRequestDTO searchRequest, Pageable pageable) {
-        return customerRepository.getAllAndSearch(searchRequest, pageable);
+    public Page<CustomerResDTO> getAllAndSearch(CustomerRequestDTO request, Pageable pageable) {
+        if(request.getSearch() != null){
+            request.setSearch("%" + request.getSearch() + "%");
+        }
+        return customerRepository.getAllAndSearch(request, pageable);
     }
 
     @Override
