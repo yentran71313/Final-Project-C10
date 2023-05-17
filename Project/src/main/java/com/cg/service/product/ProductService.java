@@ -18,7 +18,7 @@ import com.cg.repository.ImageRepository;
 import com.cg.repository.ProductRepository;
 
 
-import com.cg.service.baseService.IBaseService;
+
 import com.cg.service.upload.UploadService;
 import com.cg.util.AppConstant;
 import com.cg.util.UploadUtil;
@@ -38,7 +38,7 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 @Transactional
-public class ProductService implements IBaseService<ProductListResponse, ProductListRequest, ProductCreateRequest, Product> {
+public class ProductService implements com.cg.service.baseservice.IBaseService<ProductListResponse, ProductListRequest, ProductCreateRequest, Product> {
 
 
 

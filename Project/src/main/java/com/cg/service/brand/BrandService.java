@@ -12,7 +12,7 @@ import com.cg.repository.BrandRepository;
 
 
 import com.cg.repository.ImageRepository;
-import com.cg.service.baseService.IBaseService;
+
 
 
 import com.cg.util.AppConstant;
@@ -31,7 +31,7 @@ import java.util.Optional;
 @Service
 @Transactional
 @AllArgsConstructor
-public class BrandService implements IBaseService<BrandListResponse, BrandListRequest, BrandListCreateRequest, BrandListResponse> {
+public class BrandService implements com.cg.service.baseservice.IBaseService<BrandListResponse, BrandListRequest, BrandListCreateRequest, BrandListResponse> {
 
     private final BrandRepository brandRepository;
 

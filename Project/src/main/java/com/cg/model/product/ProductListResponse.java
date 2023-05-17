@@ -4,7 +4,11 @@ import com.cg.model.Image;
 import lombok.*;
 
 import java.math.BigDecimal;
+<<<<<<< HEAD
+import java.util.List;
+=======
 import java.util.Arrays;
+>>>>>>> 4948ac4 (Huy_dev Update Brand Backend)
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -19,10 +23,21 @@ public class ProductListResponse {
     private BigDecimal price;
     private BigDecimal marketPrice;
     private String nameCategory;
+    private Long categoryId;
+    private Long brandId;
     private String nameBrand;
+    private String avatar;
+    private Long avatarId;
     private String warranty;
+<<<<<<< HEAD
+    private List<String> images;
+    private List<Long> imageIds;
+
+    private String description;
+=======
 
     private Map<Long,String> images;
+>>>>>>> 4948ac4 (Huy_dev Update Brand Backend)
 
     public ProductListResponse(Long id, String name, BigDecimal price, BigDecimal marketPrice, String nameCategory, String nameBrand, String warranty) {
         this.id = id;
