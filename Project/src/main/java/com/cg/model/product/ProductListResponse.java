@@ -36,15 +36,5 @@ public class ProductListResponse {
 
     }
 
-//    public ProductListResponse(Product product){
-//        this.id = product.getId();
-//        this.name = product.getName();
-//        this.price = product.getPrice();
-//        this.marketPrice = product.getMarketPrice();
-//        this.nameCategory = product.getCategory().getName();
-//        this.nameBrand = product.getBrand().getName();
-//        this.warranty = product.getWarranty();
-//        this.images = product.getImages().stream().collect(Collectors.toMap(Image::getId,image -> image.getFileUrl()));
-//    }
 
 }

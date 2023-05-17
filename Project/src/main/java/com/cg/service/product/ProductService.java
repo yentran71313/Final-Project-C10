@@ -43,8 +43,12 @@ public class ProductService implements IBaseService<ProductListResponse, Product
         if(request.getSearch() != null){
             request.setSearch("%" + request.getSearch() + "%");
         }
-        List<ProductListResponse> list = productRepository.findAllProduct(request, pageable).stream().map(e->e.toProductListResponse()).collect(Collectors.toList());
-        return new PageImpl<>( list,pageable,list.size());
+        Page<Product> products = productRepository.getAllAndSearch(pageable,request);
+
+        List<ProductListResponse> productListResponses = products.stream().map(e-> e.toProductListResponse()).collect(Collectors.toList());
+        Page<ProductListResponse> page = new PageImpl<>(productListResponses, pageable, products.getTotalElements());
+        return page;
+
     }
 
     @Override
