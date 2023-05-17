@@ -1,15 +1,7 @@
 package com.cg.model.product;
-
-import com.cg.model.Image;
 import lombok.*;
-
 import java.math.BigDecimal;
-
 import java.util.List;
-
-import java.util.stream.Collectors;
-
-
 @Setter
 @Getter
 @AllArgsConstructor

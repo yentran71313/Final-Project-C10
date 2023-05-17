@@ -1,5 +1,4 @@
 package com.cg.service.product;
-
 import com.cg.exception.ResourceNotFoundException;
 import com.cg.model.Image;
 import com.cg.model.product.Product;
@@ -12,7 +11,6 @@ import com.cg.repository.ImageRepository;
 import com.cg.repository.ProductRepository;
 import com.cg.service.baseservice.IBaseService;
 import com.cg.util.AppConstant;
-import com.cg.util.UploadUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -21,7 +19,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
-
 import java.util.stream.Collectors;
 
 
@@ -48,7 +45,6 @@ public class ProductService implements IBaseService<ProductListResponse, Product
         }
         List<ProductListResponse> list = productRepository.findAllProduct(request, pageable).stream().map(e->e.toProductListResponse()).collect(Collectors.toList());
         return new PageImpl<>( list,pageable,list.size());
-
     }
 
     @Override
@@ -99,7 +95,6 @@ public class ProductService implements IBaseService<ProductListResponse, Product
             image.setProduct(null);
             imageRepository.save(image);
         }
-
         Product product = productRepository.save(productCreateRequest.toProduct());
         for (Image image : product.getImages()) {
             image.setProduct(product);
