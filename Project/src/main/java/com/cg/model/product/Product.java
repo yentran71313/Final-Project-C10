@@ -11,12 +11,15 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Entity
 @Getter
@@ -43,14 +46,18 @@ public class Product extends BaseEntity {
 
     private String warranty;
 
-    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
     private Set<Image> images;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne
+    @JoinColumn(name = "avatar_id")
+    private Image avatar;
+
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "brand_id")
     private Brand brand;
 
@@ -58,15 +65,24 @@ public class Product extends BaseEntity {
     @OneToMany(mappedBy = "productOrder")
     private List<OrderItem> orderItems;
 
-    public ProductListResponse toProductListResponse(Map images){
+    public ProductListResponse toProductListResponse(){
+        List<Image> list = images.stream().collect(Collectors.toList());
         return new ProductListResponse()
+                .setId(id)
                 .setName(name)
                 .setPrice(price)
+                .setBrandId(brand.getId())
+                .setCategoryId(category.getId())
                 .setWarranty(warranty)
                 .setMarketPrice(marketPrice)
                 .setNameBrand(brand.getName())
+                .setAvatarId(avatar.getId())
+                .setImageIds(list.stream().map(Image::getId).collect(Collectors.toList()))
                 .setNameCategory(category.getName())
-                .setImages(images).setId(id);
+                .setImages(list.stream().map(Image::getFileUrl).collect(Collectors.toList()))
+                .setAvatar(avatar.getFileUrl());
+
+
 
     }
 }
