@@ -1,6 +1,6 @@
 package com.cg.api.brand;
 
-import com.cg.model.product.Brand;
+import com.cg.exception.DataInputException;
 import com.cg.service.brand.BrandListCreateRequest;
 import com.cg.service.brand.BrandListRequest;
 import com.cg.service.brand.BrandListResponse;
@@ -10,7 +10,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -22,6 +21,10 @@ public class BrandApi {
 
     private final BrandService brandService;
 
+    @GetMapping
+    public ResponseEntity<?> findAll(Pageable pageable, BrandListRequest request){
+        return new ResponseEntity<>(brandService.getAllAndSearch(request,pageable),HttpStatus.OK);
+    }
     @PostMapping
     public ResponseEntity<?> create(@RequestBody BrandListCreateRequest brandListCreateRequest) throws IOException {
         brandService.create(brandListCreateRequest);
@@ -35,8 +38,24 @@ public class BrandApi {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping
-    public ResponseEntity<?> findAll(Pageable pageable, BrandListRequest request){
-        return new ResponseEntity<>(brandService.getAllAndSearch(request,pageable),HttpStatus.OK);
+    @PatchMapping("/delete/{brandId}")
+    public ResponseEntity<?> delete(@PathVariable Long brandId) throws IOException {
+        try {
+            brandService.delete(brandId);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new DataInputException("Lỗi không thể xóa sản phẩm!");
+        }
+    }
+    @PatchMapping("/restore/{brandId}")
+    public ResponseEntity<?> restore(@PathVariable Long brandId) throws IOException {
+        try {
+            brandService.restore(brandId);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new DataInputException("Lỗi không thể khôi phục sản phẩm!");
+        }
     }
 }

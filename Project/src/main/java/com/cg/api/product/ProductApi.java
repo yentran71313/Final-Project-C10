@@ -40,12 +40,14 @@ public class ProductApi {
 
     @GetMapping("/{idProduct}")
     public ResponseEntity<?> findById(@PathVariable Long idProduct){
+
         Optional<Product> productOptional = productService.findById(idProduct);
         if (!productOptional.isPresent()){
             throw new ResourceNotFoundException(String.format(AppConstant.MESSAGE_NO_EXIST, "Product"));
         }
         ProductListResponse productListResponse = productOptional.get().toProductListResponse();
         return new ResponseEntity<>(productListResponse,HttpStatus.OK);
+
 
     }
 

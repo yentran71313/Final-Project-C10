@@ -1,10 +1,14 @@
 package com.cg.model.product;
 
+import com.cg.model.Image;
 import lombok.*;
 
 import java.math.BigDecimal;
+
 import java.util.List;
-import java.util.Map;
+
+
+import java.util.stream.Collectors;
 
 
 @Setter
@@ -23,10 +27,14 @@ public class ProductListResponse {
     private String avatar;
     private Long avatarId;
     private String warranty;
+
     private List<String> images;
     private List<Long> imageIds;
 
     private String description;
+
+
+
 
     public ProductListResponse(Long id, String name, BigDecimal price, BigDecimal marketPrice, String nameCategory, String nameBrand, String warranty) {
         this.id = id;
@@ -36,6 +44,8 @@ public class ProductListResponse {
         this.nameCategory = nameCategory;
         this.nameBrand = nameBrand;
         this.warranty = warranty;
+
     }
 
+    
 }

@@ -40,7 +40,6 @@ public class UploadService implements IUploadService{
     }
 
     public List<Long> uploadAndSaveFile(MultipartFile[] multipartFiles) throws IOException {
-
         List<Long> images = new ArrayList<>();
         for (MultipartFile multipartFile: multipartFiles
              ) {
@@ -58,8 +57,6 @@ public class UploadService implements IUploadService{
             image = imageRepository.save(image);
             images.add(image.getId());
         }
-
-
         return images;
     }
 }

@@ -19,28 +19,26 @@ import com.cg.repository.ProductRepository;
 
 
 
-
-
-import com.cg.service.baseservice.IBaseService;
+import com.cg.service.upload.UploadService;
 import com.cg.util.AppConstant;
-
+import com.cg.util.UploadUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
-
-import java.util.List;
-import java.util.Optional;
+import java.io.IOException;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
 @Service
 @AllArgsConstructor
 @Transactional
-public class ProductService implements IBaseService<ProductListResponse, ProductListRequest, ProductCreateRequest, Product> {
+public class ProductService implements com.cg.service.baseservice.IBaseService<ProductListResponse, ProductListRequest, ProductCreateRequest, Product> {
 
 
 
@@ -58,8 +56,11 @@ public class ProductService implements IBaseService<ProductListResponse, Product
         if(request.getSearch() != null){
             request.setSearch("%" + request.getSearch() + "%");
         }
-        List<ProductListResponse> list = productRepository.findAllProduct(request, pageable).stream().map(e->e.toProductListResponse()).collect(Collectors.toList());
-        return new PageImpl<>( list,pageable,list.size());
+        Page<Product> products = productRepository.getAllAndSearch(pageable,request);
+
+        List<ProductListResponse> productListResponses = products.stream().map(e->e.toProductListResponse()).collect(Collectors.toList());
+        Page<ProductListResponse> page = new PageImpl<>(productListResponses, pageable, products.getTotalElements());
+        return page;
     }
 
     @Override
@@ -75,16 +76,20 @@ public class ProductService implements IBaseService<ProductListResponse, Product
         return productRepository.findById(id);
     }
 
-
+    public ProductDetailResponse findProductDetailById(Long id) {
+        Optional<Product> productOptional = productRepository.findById(id);
+        if (!productOptional.isPresent()){
+            throw new ResourceNotFoundException(String.format(AppConstant.MESSAGE_NO_EXIST, "Product"));
+        }
+        ProductDetailResponse productDetailResponse = new ProductDetailResponse(productOptional.get());
+        return productDetailResponse;
+    }
 
     @Override
     public void create(ProductCreateRequest productCreateRequest) {
         checkExistDb(productCreateRequest);
         Product product = productRepository.save(productCreateRequest.toProduct());
         for (Image image : product.getImages()) {
-            Optional<Image> imageCr = imageRepository.findById(image.getId());
-            image.setFileUrl(imageCr.get().getFileUrl());
-            image.setCloudId(imageCr.get().getCloudId());
             image.setProduct(product);
             imageRepository.save(image);
         }
@@ -97,19 +102,11 @@ public class ProductService implements IBaseService<ProductListResponse, Product
         if (!productOptional.isPresent()){
             throw  new ResourceNotFoundException(String.format(AppConstant.MESSAGE_NO_EXIST, "Product"));
         }
-        Product productCur = productOptional.get();
-        for (Image image:productCur.getImages()
-             ) {
-            image.setProduct(null);
-            imageRepository.save(image);
-        }
         Product product = productRepository.save(productCreateRequest.toProduct());
-        for (Image image: product.getImages()
-             ) {
+        for (Image image : product.getImages()) {
             image.setProduct(product);
             imageRepository.save(image);
         }
-
     }
 
     @Override

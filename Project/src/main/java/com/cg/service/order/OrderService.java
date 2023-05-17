@@ -6,6 +6,7 @@ import com.cg.model.*;
 import com.cg.model.auth.User;
 import com.cg.model.customer.Customer;
 import com.cg.model.customer.LocationRegion;
+import com.cg.model.product.Product;
 import com.cg.repository.CustomerRepository;
 import com.cg.repository.LocationRegionRepository;
 import com.cg.repository.OrderItemRepository;
@@ -13,6 +14,7 @@ import com.cg.repository.OrderRepository;
 
 import com.cg.service.baseservice.IBaseService;
 import com.cg.service.orderItems.OrderItemCreateRequest;
+import com.cg.service.product.ProductService;
 import com.cg.util.AppConstant;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -20,6 +22,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,7 +35,7 @@ public class OrderService implements IBaseService<OrderListResponse, OrderListRe
 
     private final OrderItemRepository orderItemRepository;
 
-
+    private final ProductService productService;
     private final CustomerRepository customerRepository;
 
     private final LocationRegionRepository locationRegionRepository;
@@ -64,28 +67,30 @@ public class OrderService implements IBaseService<OrderListResponse, OrderListRe
 
     public boolean checkout(OrderDetailRequest orderDetailRequest) {
         boolean success = false;
-
         try {
             Order order = new Order();
             order.setTotalAmount(orderDetailRequest.getTotalAmount());
             LocationRegion locationRegion = orderDetailRequest.getCustomer().getLocationRegion();
             locationRegion = locationRegionRepository.save(locationRegion);
             Customer customer = orderDetailRequest.getCustomer();
-//            customer.setPhoneNumber(customer.getPhoneNumber());
             customer.setLocationRegion(locationRegion);
             customer = customerRepository.save(customer);
             order.setCustomerOrder(customer);
-
-            order = orderRepository.save(order);
-
             List<OrderItemCreateRequest> orderItems = orderDetailRequest.getOrderItems();
-
+            BigDecimal totalAmount = BigDecimal.ZERO;
             for (OrderItemCreateRequest item : orderItems) {
+                Optional<Product> product = productService.findProductById(item.getProductId());
                 OrderItem orderItem = item.toOrderItem();
                 orderItem.setOrder(order);
-                orderItem.setAmount(item.getAmount());
+                BigDecimal amount = product.get().getPrice().multiply(BigDecimal.valueOf(item.getQuantity()));
+                orderItem.setAmount(amount);
                 orderItemRepository.save(orderItem);
+
+                totalAmount = totalAmount.add(amount);
             }
+            BigDecimal DeliveryShipping = BigDecimal.valueOf(10);
+            order.setTotalAmount(totalAmount.add(DeliveryShipping));
+            orderRepository.save(order);
             success = true;
         } catch (Exception e) {
             e.printStackTrace();
