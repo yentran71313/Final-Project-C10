@@ -9,7 +9,8 @@ import com.cg.model.dto.customerDTO.CustomerResDTO;
 import com.cg.repository.CustomerRepository;
 import com.cg.repository.ImageRepository;
 import com.cg.repository.LocationRegionRepository;
-import com.cg.service.baseService.IBaseService;
+
+import com.cg.service.baseservice.IBaseService;
 import com.cg.service.upload.UploadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

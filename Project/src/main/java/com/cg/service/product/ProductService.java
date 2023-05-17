@@ -1,12 +1,6 @@
 package com.cg.service.product;
 
-
-import com.cg.model.product.Brand;
-import com.cg.model.product.Category;
-
-import com.cg.exception.DataInputException;
 import com.cg.exception.ResourceNotFoundException;
-
 import com.cg.model.Image;
 import com.cg.model.product.Product;
 import com.cg.model.product.ProductCreateRequest;
@@ -16,10 +10,7 @@ import com.cg.repository.BrandRepository;
 import com.cg.repository.CategoryRepository;
 import com.cg.repository.ImageRepository;
 import com.cg.repository.ProductRepository;
-
-
-import com.cg.service.baseService.IBaseService;
-import com.cg.service.upload.UploadService;
+import com.cg.service.baseservice.IBaseService;
 import com.cg.util.AppConstant;
 import com.cg.util.UploadUtil;
 import lombok.AllArgsConstructor;
@@ -28,10 +19,9 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
+import java.util.List;
+import java.util.Optional;
 
-import java.io.IOException;
-import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -56,11 +46,9 @@ public class ProductService implements IBaseService<ProductListResponse, Product
         if(request.getSearch() != null){
             request.setSearch("%" + request.getSearch() + "%");
         }
-        Page<Product> products = productRepository.getAllAndSearch(pageable,request);
+        List<ProductListResponse> list = productRepository.findAllProduct(request, pageable).stream().map(e->e.toProductListResponse()).collect(Collectors.toList());
+        return new PageImpl<>( list,pageable,list.size());
 
-        List<ProductListResponse> productListResponses = products.stream().map(ProductListResponse::new).collect(Collectors.toList());
-        Page<ProductListResponse> page = new PageImpl<>(productListResponses, pageable, products.getTotalElements());
-        return page;
     }
 
     @Override
@@ -90,6 +78,9 @@ public class ProductService implements IBaseService<ProductListResponse, Product
         checkExistDb(productCreateRequest);
         Product product = productRepository.save(productCreateRequest.toProduct());
         for (Image image : product.getImages()) {
+            Optional<Image> imageOptional = imageRepository.findById(image.getId());
+            image.setCloudId(imageOptional.get().getCloudId());
+            image.setFileUrl(imageOptional.get().getFileUrl());
             image.setProduct(product);
             imageRepository.save(image);
         }
@@ -102,6 +93,13 @@ public class ProductService implements IBaseService<ProductListResponse, Product
         if (!productOptional.isPresent()){
             throw  new ResourceNotFoundException(String.format(AppConstant.MESSAGE_NO_EXIST, "Product"));
         }
+        Product productCur = productOptional.get();
+        for (Image image:productCur.getImages()
+             ) {
+            image.setProduct(null);
+            imageRepository.save(image);
+        }
+
         Product product = productRepository.save(productCreateRequest.toProduct());
         for (Image image : product.getImages()) {
             image.setProduct(product);

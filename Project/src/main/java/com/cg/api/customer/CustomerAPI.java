@@ -37,10 +37,6 @@ public class CustomerAPI {
         return new ResponseEntity<>(customerService.getAllAndSearch(request, pageable), HttpStatus.OK);
     }
 
-
-
-
-
     @PostMapping
     public ResponseEntity<?> create(@Validated @RequestBody CustomerCreateDTO customerCreateDTO, BindingResult bindingResult) throws IOException {
 

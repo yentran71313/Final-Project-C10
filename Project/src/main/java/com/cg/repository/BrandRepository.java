@@ -6,11 +6,12 @@ import com.cg.service.brand.BrandListResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface BrandRepository extends JpaRepository<Brand, Long> {
+public interface BrandRepository extends JpaRepository<Brand, Long>{
 
     @Query("select new com.cg.service.brand.BrandListResponse(b.id,b.name,b.image.fileUrl,b.image.id) " +
             "from Brand b left join Image img on img.id = b.image.id " +

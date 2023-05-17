@@ -1,4 +1,5 @@
-package com.cg.service.baseService;
+package com.cg.service.baseservice;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import java.util.Optional;
