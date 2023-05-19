@@ -12,4 +12,6 @@ public class ProductListRequest {
     private Long categoryId;
     private BigDecimal minPrice;
     private BigDecimal maxPrice;
+    private Boolean stock;
+    private Boolean outStock;
 }

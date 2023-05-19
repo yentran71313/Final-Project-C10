@@ -25,7 +25,7 @@ public interface ProductRepository extends JpaRepository<Product,Long> {
             "where (:#{#request.search} is null or p.name  like :#{#request.search} or :#{#request.search}  like p.description)  " +
             "and (:#{#request.brandId} is null or :#{#request.brandId} = p.brand.id) " +
             "and (:#{#request.categoryId} is null or :#{#request.categoryId} = p.category.id)" +
-            "and (p.price between :#{#request.minPrice} and :#{#request.maxPrice}) "
+            "and  (p.price between :#{#request.minPrice} and :#{#request.maxPrice}) "
     )
     Page<Product> getAllAndSearch(Pageable pageable,ProductListRequest request);
 
