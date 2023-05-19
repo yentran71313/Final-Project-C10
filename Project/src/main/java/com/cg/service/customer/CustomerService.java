@@ -52,8 +52,12 @@ public class CustomerService implements IBaseService<CustomerResDTO, CustomerReq
     @Override
     public void update(CustomerCreateDTO customerCreateDTO) {
         Optional<Customer> customer = customerRepository.findById(customerCreateDTO.getId());
+        Customer customerEntity = customer.get();
+        if (customerCreateDTO.getImage() == 0) {
+            customerCreateDTO.setImage(customerEntity.getImage().getId());
+        }
         Customer customerUp = customerCreateDTO.toCustomer();
-        locationRegionRepository.save(customerUp.getLocationRegion().setId(customer.get().getLocationRegion().getId()));
+        locationRegionRepository.save(customerUp.getLocationRegion().setId(customerEntity.getLocationRegion().getId()));
         customerRepository.save(customerUp);
 
 
