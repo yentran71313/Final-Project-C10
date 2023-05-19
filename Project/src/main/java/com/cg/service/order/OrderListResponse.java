@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderListResponse {
+
     private Long id;
 
     private BigDecimal totalAmount;
@@ -20,5 +21,15 @@ public class OrderListResponse {
     private String customerName;
 
     private String phone;
+
+    private String status;
+
+    private String address;
+
+    private String provinceName;
+
+    private String districtName;
+
+    private String wardName;
 
 }

@@ -11,6 +11,7 @@ import lombok.Setter;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
+import javax.persistence.Column;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.stream.Collectors;
@@ -76,6 +77,7 @@ public class ProductCreateRequest implements Validator {
                 .setCategory(new Category().setId(categoryId))
                 .setBrand(new Brand().setId(brandId))
                 .setAvatar(new Image().setId(avatarId))
+                .setQuantity(0L)
                 .setDescription(description)
                 .setImages(Arrays.stream(images).map(e -> new Image().setId(e)).collect(Collectors.toSet()));
     }

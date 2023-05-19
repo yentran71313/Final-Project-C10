@@ -15,12 +15,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
 
-    @Query("select new com.cg.service.order.OrderListResponse(" +
-            "o.id, " +
-            "o.totalAmount, " +
-            "o.customerOrder.fullName," +
-            "o.customerOrder.phoneNumber) " +
+    @Query("select o " +
             "from Order  o " +
             "where (:#{#request.search} is null or o.customerOrder.fullName  like :#{#request.search})")
-    Page<OrderListResponse> getAllAndSearch(OrderListRequest request, Pageable pageable);
+    Page<Order> getAllAndSearch(OrderListRequest request, Pageable pageable);
 }

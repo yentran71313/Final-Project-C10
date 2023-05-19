@@ -4,6 +4,7 @@ package com.cg.model.product;
 import com.cg.model.BaseEntity;
 import com.cg.model.Image;
 import com.cg.model.OrderItem;
+import com.cg.model.auth.enums.StatusOrder;
 import com.cg.model.product.Brand;
 import com.cg.model.product.Category;
 import com.cg.model.product.ProductListResponse;
@@ -15,6 +16,7 @@ import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -35,8 +37,10 @@ public class Product extends BaseEntity {
     private Long id;
 
     private String name;
-
+    @Column(columnDefinition = "longtext")
     private String description;
+
+    private Long quantity;
 
     private BigDecimal marketPrice;
 
@@ -61,14 +65,23 @@ public class Product extends BaseEntity {
     @JoinColumn(name = "brand_id")
     private Brand brand;
 
+    @Column(name = "status", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private ProductStatus status;
 
     @OneToMany(mappedBy = "productOrder")
     private List<OrderItem> orderItems;
 
     public ProductListResponse toProductListResponse(){
-        List<Image> list = images.stream().collect(Collectors.toList());
+        List<Image> list = new ArrayList<>(images);
+        if (quantity >0) {
+            setStatus(ProductStatus.IN_STOCK);
+        } else {
+            setStatus(ProductStatus.OUT_STOCK);
+        }
         return new ProductListResponse()
                 .setId(id)
+                .setStatus(status.getValue())
                 .setName(name)
                 .setPrice(price)
                 .setBrandId(brand.getId())

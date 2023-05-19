@@ -51,7 +51,6 @@ public class CustomerAPI {
 
     @PatchMapping("{idCustomer}")
     public ResponseEntity<CustomerResDTO> update(@PathVariable Long idCustomer,@RequestBody CustomerCreateDTO customerCreateDTO, BindingResult bindingResult) throws IOException {
-
         customerCreateDTO.setId(idCustomer);
         customerService.update(customerCreateDTO);
         return new ResponseEntity<>(HttpStatus.OK);

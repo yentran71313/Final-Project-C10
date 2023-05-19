@@ -21,8 +21,9 @@ public class ProductListResponse {
     private List<String> images;
     private List<Long> imageIds;
 
-
     private String description;
+
+    private String status;
 
 
     public ProductListResponse(Long id, String name, BigDecimal price, BigDecimal marketPrice, String nameCategory, String nameBrand, String warranty) {

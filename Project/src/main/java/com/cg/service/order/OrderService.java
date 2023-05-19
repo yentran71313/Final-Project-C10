@@ -4,9 +4,11 @@ import com.cg.exception.DataInputException;
 import com.cg.exception.ResourceNotFoundException;
 import com.cg.model.*;
 import com.cg.model.auth.User;
+import com.cg.model.auth.enums.StatusOrder;
 import com.cg.model.customer.Customer;
 import com.cg.model.customer.LocationRegion;
 import com.cg.model.product.Product;
+import com.cg.model.product.ProductListResponse;
 import com.cg.repository.CustomerRepository;
 import com.cg.repository.LocationRegionRepository;
 import com.cg.repository.OrderItemRepository;
@@ -17,7 +19,9 @@ import com.cg.service.orderItems.OrderItemCreateRequest;
 import com.cg.service.product.ProductService;
 import com.cg.util.AppConstant;
 import lombok.AllArgsConstructor;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -45,7 +50,10 @@ public class OrderService implements IBaseService<OrderListResponse, OrderListRe
         if (request.getSearch() != null) {
             request.setSearch("%" + request.getSearch() + "%");
         }
-        return orderRepository.getAllAndSearch(request, pageable);
+        Page<Order> orders = orderRepository.getAllAndSearch(request,pageable);
+        List<OrderListResponse> orderListResponses = orders.stream().map(e->e.toOrderListResponse()).collect(Collectors.toList());
+        Page<OrderListResponse> page = new PageImpl<>(orderListResponses,pageable,orders.getTotalElements());
+        return page;
     }
 
     @Override
@@ -90,6 +98,7 @@ public class OrderService implements IBaseService<OrderListResponse, OrderListRe
             }
             BigDecimal DeliveryShipping = BigDecimal.valueOf(10);
             order.setTotalAmount(totalAmount.add(DeliveryShipping));
+            order.setStatus(StatusOrder.PENDING);
             orderRepository.save(order);
             success = true;
         } catch (Exception e) {
