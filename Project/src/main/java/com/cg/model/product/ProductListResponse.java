@@ -3,6 +3,7 @@ package com.cg.model.product;
 import com.cg.model.Image;
 import lombok.*;
 
+import javax.persistence.Column;
 import java.math.BigDecimal;
 
 import java.util.List;
@@ -30,8 +31,9 @@ public class ProductListResponse {
 
     private List<String> images;
     private List<Long> imageIds;
-
     private String description;
+
+    private String status;
 
 
 
