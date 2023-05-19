@@ -14,7 +14,9 @@ import java.util.Optional;
 @Repository
 public interface CategoryRepository extends JpaRepository<Category,Long> {
 
-    @Query("select new com.cg.service.category.CategoryListResponse(c.id,c.name) from Category c where :#{#request.search} is null or c.name  like :#{#request.search}")
+    @Query("select new com.cg.service.category.CategoryListResponse(c.id,c.name,c.image.fileUrl,c.image.id) " +
+            "from Category c left join Image img on img.id = c.image.id " +
+            "where :#{#request.search} is null or c.name  like :#{#request.search}  and c.deleted=:#{#request.deleted} ")
     Page<CategoryListResponse> getAllCategory (CategoryListRequest request, Pageable pageable);
 
 

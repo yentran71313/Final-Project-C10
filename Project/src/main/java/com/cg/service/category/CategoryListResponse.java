@@ -13,8 +13,14 @@ public class CategoryListResponse {
     private Long id;
     private String name;
 
+    private String fileUrl;
+
+    private Long imageId;
+
     public CategoryListResponse(Category category) {
         this.id = category.getId();
         this.name = category.getName();
+        this.fileUrl = category.getImage().getFileUrl();
+        this.imageId = category.getImage().getId();
     }
 }

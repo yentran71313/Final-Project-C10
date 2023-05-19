@@ -28,9 +28,9 @@ public class CategoryService implements IBaseService<CategoryListResponse, Categ
     private final CategoryRepository categoryRepository;
     @Override
     public Page<CategoryListResponse> getAllAndSearch(CategoryListRequest searchRequest, Pageable pageable) {
-        if(searchRequest.getSearch() != null){
-            searchRequest.setSearch("%" + searchRequest.getSearch() + "%");
-        }
+//        if(searchRequest.getSearch() != null){
+//            searchRequest.setSearch("%" + searchRequest.getSearch() + "%");
+//        }
         return categoryRepository.getAllCategory(searchRequest, pageable);
     }
 
