@@ -79,6 +79,7 @@ public class ProductCreateRequest implements Validator {
                 .setAvatar(new Image().setId(avatarId))
                 .setQuantity(0L)
                 .setDescription(description)
+                .setStatus(ProductStatus.OUT_STOCK)
                 .setImages(Arrays.stream(images).map(e -> new Image().setId(e)).collect(Collectors.toSet()));
     }
 }

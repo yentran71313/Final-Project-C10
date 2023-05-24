@@ -110,27 +110,72 @@ public class OrderService implements IBaseService<OrderListResponse, OrderListRe
     @Override
     public void create(OrderCreateRequest orderCreateRequest) {
         checkExistDb(orderCreateRequest);
-        Order order = orderRepository.save(orderCreateRequest.toOrder());
-        for (OrderItem orderItem : order.getOrderItems()) {
-            orderItem.setOrder(order);
-            orderItemRepository.save(orderItem);
-        }
     }
 
     @Override
     public void update(OrderCreateRequest orderCreateRequest) {
         checkExistDb(orderCreateRequest);
-        Optional<Order> orderOptional = orderRepository.findById(orderCreateRequest.getId());
-        if (!orderOptional.isPresent()) {
-            throw new ResourceNotFoundException(String.format(AppConstant.MESSAGE_NO_EXIST, "Order"));
-        }
-        Order order = orderRepository.save(orderCreateRequest.toOrder());
-        for (OrderItem orderItem : order.getOrderItems()) {
-            orderItem.setOrder(order);
-            orderItemRepository.save(orderItem);
-        }
-    }
+        try {
+            Optional<Order> orderOptional = orderRepository.findById(orderCreateRequest.getId());
+            if (!orderOptional.isPresent()) {
+                throw new ResourceNotFoundException(String.format(AppConstant.MESSAGE_NO_EXIST, "Order"));
+            }
+            Order order = orderRepository.getById(orderCreateRequest.getId());
+            order.setTotalAmount(orderCreateRequest.getTotalAmount());
+            Customer customer = customerRepository.getById(orderCreateRequest.getCustomer().getId());
+            customer.setFullName(orderCreateRequest.getCustomer().getFullName());
+            customer.setPhoneNumber(orderCreateRequest.getCustomer().getPhoneNumber());
+            customer.setEmail(orderCreateRequest.getCustomer().getEmail());
+            LocationRegion locationRegion = locationRegionRepository.getById(customer.getLocationRegion().getId());
+            locationRegion.setProvinceId(orderCreateRequest.getCustomer().getLocationRegion().getProvinceId());
+            locationRegion.setProvinceName(orderCreateRequest.getCustomer().getLocationRegion().getProvinceName());
+            locationRegion.setDistrictId(orderCreateRequest.getCustomer().getLocationRegion().getDistrictId());
+            locationRegion.setDistrictName(orderCreateRequest.getCustomer().getLocationRegion().getDistrictName());
+            locationRegion.setWardId(orderCreateRequest.getCustomer().getLocationRegion().getWardId());
+            locationRegion.setWardName(orderCreateRequest.getCustomer().getLocationRegion().getWardName());
+            locationRegion.setAddress(orderCreateRequest.getCustomer().getLocationRegion().getAddress());
+            locationRegion = locationRegionRepository.save(locationRegion);
 
+            customer.setLocationRegion(locationRegion);
+            customer = customerRepository.save(customer);
+
+            order.setCustomerOrder(customer);
+            List<OrderItem> orderItems = orderItemRepository.findByOrder(order);
+            orderItemRepository.deleteAll(orderItems);
+            List<OrderItemCreateRequest> orderItemsNew = orderCreateRequest.getOrderItems();
+            BigDecimal totalAmount = BigDecimal.ZERO;
+            for (OrderItemCreateRequest item : orderItemsNew) {
+                Optional<Product> product = productService.findProductById(item.getProductId());
+                OrderItem orderItem = item.toOrderItem();
+                orderItem.setOrder(order);
+                BigDecimal amount = product.get().getPrice().multiply(BigDecimal.valueOf(item.getQuantity()));
+                orderItem.setAmount(amount);
+                orderItemRepository.save(orderItem);
+
+                totalAmount = totalAmount.add(amount);
+            }
+            BigDecimal DeliveryShipping = BigDecimal.valueOf(10);
+            order.setTotalAmount(totalAmount.add(DeliveryShipping));
+//            order.setStatus(StatusOrder.PENDING);
+            orderRepository.save(order);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+    public void updateStatus(Long idOrder, String status) {
+       try{
+           Optional<Order> orderOptional = orderRepository.findById(idOrder);
+           if (!orderOptional.isPresent()) {
+               throw new ResourceNotFoundException(String.format(AppConstant.MESSAGE_NO_EXIST, "Order"));
+           }
+           Order order = orderOptional.get();
+           order.setStatus(StatusOrder.parseStatusPosts(status));
+           orderRepository.save(order);
+       }catch (Exception e) {
+           e.printStackTrace();
+       }
+    }
     @Override
     public void delete(Long id) {
 

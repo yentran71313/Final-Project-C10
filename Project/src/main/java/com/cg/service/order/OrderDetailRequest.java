@@ -23,10 +23,5 @@ public class OrderDetailRequest {
 
     private List<OrderItemCreateRequest> orderItems;
 
-//    public OrderDetailRequest(Order order){
-//        id = order.getId();
-//        totalAmount = order.getTotalAmount();
-//        customer = order.getCustomerOrder();
-//        orderItems = order.getOrderItems().to;
-//    }
+
 }

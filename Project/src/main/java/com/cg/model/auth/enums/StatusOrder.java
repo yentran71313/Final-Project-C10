@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum StatusOrder {
     PENDING("PENDING"),
-    COMPLETED("COMPLETED"),
+    PAID("PAID"),
     SHIPPED("SHIPPED"),
     CANCELLED("CANCELLED");
 

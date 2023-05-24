@@ -1,8 +1,10 @@
 package com.cg.model;
 
 
+import com.cg.model.auth.Role;
 import com.cg.model.auth.enums.StatusOrder;
 import com.cg.model.customer.Customer;
+import com.cg.model.product.ProductStatus;
 import com.cg.service.order.OrderListResponse;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
