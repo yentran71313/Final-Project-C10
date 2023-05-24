@@ -1,6 +1,7 @@
 package com.cg.repository;
 
 import com.cg.model.*;
+import com.cg.service.orderItems.OrderItemCreateRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -21,5 +22,6 @@ public interface OrderItemRepository extends JpaRepository<OrderItem, Long> {
 
     @Query(value = "SELECT SUM(oi.amount) FROM order_item AS oi WHERE oi.order_id = :orderId", nativeQuery = true)
     BigDecimal getSumAmount(@Param("orderId") long orderId);
+
 
 }

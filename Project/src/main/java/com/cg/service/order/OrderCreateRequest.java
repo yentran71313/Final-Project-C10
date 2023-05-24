@@ -1,7 +1,10 @@
 package com.cg.service.order;
 
 import com.cg.model.*;
+import com.cg.model.auth.enums.StatusOrder;
 import com.cg.model.customer.Customer;
+import com.cg.model.customer.LocationRegion;
+import com.cg.service.orderItems.OrderItemCreateRequest;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,12 +27,9 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 public class OrderCreateRequest implements Validator {
     private Long id;
-
     private BigDecimal totalAmount;
-
-    private Long customerId;
-
-    private Long[] orderItems;
+    private Customer customer;
+    private List<OrderItemCreateRequest> orderItems;
 
     @Override
     public boolean supports(Class<?> clazz) {
@@ -49,11 +49,11 @@ public class OrderCreateRequest implements Validator {
 //            errors.rejectValue("name","name.length","Name is not valid");
 //        }
     }
-    public Order toOrder(){
-        return new Order()
-                .setId(id)
-                .setTotalAmount(totalAmount)
-                .setCustomerOrder(new Customer().setId(customerId))
-                .setOrderItems(Arrays.stream(orderItems).map(e -> new OrderItem().setId(e)).collect(Collectors.toList()));
-    }
+//    public Order toOrder(){
+//        return new Order()
+//                .setId(id)
+//                .setTotalAmount(totalAmount)
+//                .setCustomerOrder(new Customer().setId(customerId))
+//                .setOrderItems(Arrays.stream(orderItems).map(e -> new OrderItem().setId(e)).collect(Collectors.toList()));
+//    }
 }
