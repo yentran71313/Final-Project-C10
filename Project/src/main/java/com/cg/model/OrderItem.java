@@ -40,6 +40,7 @@ public class OrderItem {
     public OrderItemDetailResponse toOrderItemDetailResponse(){
         return new OrderItemDetailResponse()
                 .setId(id)
+                .setPrice(productOrder.getPrice())
                 .setQuantity(quantity)
                 .setAmount(amount)
                 .setProductId(productOrder.getId())

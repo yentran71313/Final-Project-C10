@@ -51,7 +51,7 @@ public class OrderService implements IBaseService<OrderListResponse, OrderListRe
             request.setSearch("%" + request.getSearch() + "%");
         }
         Page<Order> orders = orderRepository.getAllAndSearch(request,pageable);
-        List<OrderListResponse> orderListResponses = orders.stream().map(e->e.toOrderListResponse()).collect(Collectors.toList());
+        List<OrderListResponse> orderListResponses = orders.stream().map(Order::toOrderListResponse).collect(Collectors.toList());
         Page<OrderListResponse> page = new PageImpl<>(orderListResponses,pageable,orders.getTotalElements());
         return page;
     }

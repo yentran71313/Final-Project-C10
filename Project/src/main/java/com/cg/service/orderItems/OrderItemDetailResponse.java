@@ -20,6 +20,8 @@ public class OrderItemDetailResponse {
 
     private BigDecimal amount;
 
+    private BigDecimal price;
+
     private Long productId;
 
     private Long orderId;

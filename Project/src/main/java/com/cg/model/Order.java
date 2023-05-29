@@ -14,6 +14,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Getter
@@ -46,10 +47,15 @@ public class Order extends BaseEntity {
                 .setCustomerName(customerOrder.getFullName())
                 .setStatus(status.getValue())
                 .setPhone(customerOrder.getPhoneNumber())
+                .setEmail(customerOrder.getEmail())
                 .setAddress(customerOrder.getLocationRegion().getAddress())
                 .setProvinceName(customerOrder.getLocationRegion().getProvinceName())
+                .setProvinceId(customerOrder.getLocationRegion().getProvinceId())
                 .setDistrictName(customerOrder.getLocationRegion().getDistrictName())
+                .setDistrictId(customerOrder.getLocationRegion().getDistrictId())
                 .setWardName(customerOrder.getLocationRegion().getWardName())
+                .setWardId(customerOrder.getLocationRegion().getWardId())
+                .setOrderItems(orderItems.stream().map(OrderItem::toOrderItemDetailResponse).collect(Collectors.toList()))
                 .setTotalAmount(totalAmount);
 
     }
