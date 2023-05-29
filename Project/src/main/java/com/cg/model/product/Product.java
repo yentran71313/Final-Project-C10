@@ -89,12 +89,12 @@ public class Product extends BaseEntity {
                 .setWarranty(warranty)
                 .setMarketPrice(marketPrice)
                 .setNameBrand(brand.getName())
-                .setAvatarId(avatar.getId())
+                .setAvatarId(avatar == null ? null : avatar.getId())
                 .setImageIds(list.stream().map(Image::getId).collect(Collectors.toList()))
                 .setNameCategory(category.getName())
                 .setDescription(description)
                 .setImages(list.stream().map(Image::getFileUrl).collect(Collectors.toList()))
-                .setAvatar(avatar.getFileUrl());
+                .setAvatar(avatar == null ? null : avatar.getFileUrl());
 
 
 
