@@ -81,6 +81,7 @@ public class OrderService implements IBaseService<OrderListResponse, OrderListRe
             LocationRegion locationRegion = orderDetailRequest.getCustomer().getLocationRegion();
             locationRegion = locationRegionRepository.save(locationRegion);
             Customer customer = orderDetailRequest.getCustomer();
+
             customer.setLocationRegion(locationRegion);
             customer = customerRepository.save(customer);
             order.setCustomerOrder(customer);
@@ -121,6 +122,7 @@ public class OrderService implements IBaseService<OrderListResponse, OrderListRe
                 throw new ResourceNotFoundException(String.format(AppConstant.MESSAGE_NO_EXIST, "Order"));
             }
             Order order = orderRepository.getById(orderCreateRequest.getId());
+            orderCreateRequest.getCustomer().setId(order.getCustomerOrder().getId());
             order.setTotalAmount(orderCreateRequest.getTotalAmount());
             Customer customer = customerRepository.getById(orderCreateRequest.getCustomer().getId());
             customer.setFullName(orderCreateRequest.getCustomer().getFullName());
